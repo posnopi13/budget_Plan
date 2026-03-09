@@ -1,0 +1,2 @@
+-keep class com.babytime.app.data.entity.** { *; }
+-keepattributes *Annotation*
