@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoneyBook 앱 미리보기</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 22px;
+      letter-spacing: 1px;
+    }
+    .screen-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .screen-tab {
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      transition: all 0.2s;
+    }
+    .screen-tab.active {
+      background: #6C5CE7;
+      color: #fff;
+    }
+
+    /* Phone Frame */
+    .phone {
+      width: 375px;
+      height: 750px;
+      background: #F8F9FA;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .status-bar {
+      background: #fff;
+      padding: 12px 20px 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: #2D3436;
+    }
+    .nav-bar {
+      background: #fff;
+      border-top: 1px solid #E9ECEF;
+      display: flex;
+      padding: 8px 0 16px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-icon { font-size: 22px; }
+    .nav-label { font-size: 10px; color: #ADB5BD; font-weight: 600; }
+    .nav-item.active .nav-label { color: #6C5CE7; }
+    .screen-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 70px;
+    }
+    .screen-content::-webkit-scrollbar { display: none; }
+
+    /* Header */
+    .header {
+      background: #fff;
+      padding: 14px 0;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 700;
+      color: #2D3436;
+      border-bottom: 1px solid #E9ECEF;
+    }
+
+    /* Home Screen */
+    .month-nav {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #E9ECEF;
+    }
+    .arrow { font-size: 28px; color: #6C757D; padding: 0 24px; cursor: pointer; user-select: none; }
+    .month-text { font-size: 18px; font-weight: 700; color: #2D3436; min-width: 120px; text-align: center; }
+    .summary-card {
+      margin: 14px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .summary-row { display: flex; margin-bottom: 14px; }
+    .summary-item { flex: 1; text-align: center; }
+    .summary-divider { width: 1px; background: #E9ECEF; }
+    .summary-label { font-size: 13px; color: #6C757D; margin-bottom: 6px; }
+    .summary-amount { font-size: 18px; font-weight: 800; }
+    .balance-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid #E9ECEF;
+    }
+    .balance-label { font-size: 15px; color: #6C757D; font-weight: 600; }
+    .balance-amount { font-size: 20px; font-weight: 800; color: #2D3436; }
+    .section-title { font-size: 16px; font-weight: 700; color: #2D3436; margin: 0 14px 8px; }
+    .transaction-item {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      margin: 0 14px 8px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .cat-icon {
+      width: 44px; height: 44px; border-radius: 22px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-right: 12px; flex-shrink: 0;
+    }
+    .t-info { flex: 1; }
+    .t-title { font-size: 15px; font-weight: 600; color: #2D3436; margin-bottom: 3px; }
+    .t-sub { font-size: 12px; color: #6C757D; }
+    .t-amount { font-size: 16px; font-weight: 700; }
+    .fab {
+      position: absolute;
+      bottom: 82px;
+      right: 20px;
+      width: 58px; height: 58px;
+      border-radius: 29px;
+      background: #6C5CE7;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; color: #fff; font-weight: 300;
+      box-shadow: 0 6px 20px rgba(108,92,231,0.5);
+      cursor: pointer;
+      line-height: 1;
+    }
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 40px 20px;
+    }
+    .empty-icon { font-size: 56px; margin-bottom: 16px; }
+    .empty-text { font-size: 16px; color: #6C757D; font-weight: 600; margin-bottom: 8px; }
+    .empty-sub { font-size: 14px; color: #ADB5BD; }
+
+    /* Add Screen */
+    .type-selector {
+      display: flex;
+      background: #fff;
+      border-radius: 12px;
+      padding: 4px;
+      margin: 14px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .type-btn {
+      flex: 1; padding: 12px; border-radius: 8px; text-align: center;
+      font-size: 16px; font-weight: 600; color: #ADB5BD; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .type-btn.expense-active { background: #FF6B6B; color: #fff; }
+    .type-btn.income-active { background: #00B894; color: #fff; }
+    .input-card {
+      background: #fff; border-radius: 12px; padding: 16px;
+      margin: 0 14px 14px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .input-label {
+      font-size: 12px; font-weight: 700; color: #6C757D;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .amount-display {
+      display: flex; align-items: center;
+    }
+    .amount-value { font-size: 32px; font-weight: 800; color: #2D3436; flex: 1; }
+    .amount-unit { font-size: 20px; font-weight: 600; color: #6C757D; }
+    .date-value { font-size: 16px; color: #2D3436; padding: 8px 0; border-bottom: 1px solid #E9ECEF; }
+    .cat-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cat-grid-item {
+      width: calc(33.33% - 4px);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 12px 8px; border-radius: 10px;
+      border: 2px solid #E9ECEF; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-grid-item.selected { border-color: #FF6B6B; background: #FFF5F5; }
+    .cat-icon-small {
+      width: 38px; height: 38px; border-radius: 19px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 6px;
+    }
+    .cat-name { font-size: 11px; font-weight: 600; color: #6C757D; text-align: center; }
+    .cat-grid-item.selected .cat-name { color: #FF6B6B; }
+    .memo-input {
+      font-size: 16px; color: #2D3436; padding: 8px 0;
+      border-bottom: 1px solid #E9ECEF; border: none; outline: none;
+      width: 100%; background: transparent;
+    }
+    .save-btn {
+      background: #FF6B6B; color: #fff; border: none; border-radius: 14px;
+      padding: 18px; font-size: 17px; font-weight: 700; cursor: pointer;
+      margin: 0 14px; width: calc(100% - 28px);
+      box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+    }
+
+    /* Budget Screen */
+    .total-budget-card {
+      margin: 14px;
+      background: #6C5CE7;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(108,92,231,0.4);
+      color: #fff;
+    }
+    .tb-title { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 4px; }
+    .tb-amount { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
+    .tb-row { display: flex; margin-bottom: 14px; }
+    .tb-item { flex: 1; }
+    .tb-item-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+    .tb-item-value { font-size: 16px; font-weight: 700; }
+    .progress-bg { height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+    .progress-bar { height: 8px; border-radius: 4px; }
+    .progress-text { font-size: 11px; color: rgba(255,255,255,0.8); text-align: right; }
+    .budget-card {
+      background: #fff; border-radius: 12px;
+      margin: 0 14px 10px; padding: 16px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .budget-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .budget-left { display: flex; align-items: center; }
+    .b-icon { width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 10px; }
+    .b-name { font-size: 15px; font-weight: 600; color: #2D3436; }
+    .set-budget-btn { background: #F1F3F5; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #6C757D; font-weight: 600; cursor: pointer; }
+    .spent-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .spent-label { font-size: 13px; color: #6C757D; }
+    .remain-label { font-size: 13px; font-weight: 600; color: #00B894; }
+    .b-progress-bg { height: 8px; background: #F1F3F5; border-radius: 4px; overflow: hidden; }
+    .b-progress-bar { height: 8px; border-radius: 4px; }
+
+    /* Stats Screen */
+    .stats-summary { display: flex; padding: 14px; gap: 12px; }
+    .stat-card {
+      flex: 1; background: #fff; border-radius: 12px; padding: 16px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .stat-card.income { border-left: 4px solid #00B894; }
+    .stat-card.expense { border-left: 4px solid #FF6B6B; }
+    .stat-label { font-size: 12px; color: #6C757D; font-weight: 600; margin-bottom: 6px; }
+    .stat-amount { font-size: 16px; font-weight: 800; }
+    .chart-card { background: #fff; border-radius: 16px; margin: 0 14px 14px; padding: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chart-title { font-size: 16px; font-weight: 700; color: #2D3436; }
+    .tab-row { display: flex; background: #F8F9FA; border-radius: 8px; padding: 2px; gap: 2px; }
+    .s-tab { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #ADB5BD; cursor: pointer; }
+    .s-tab.active-expense { background: #FF6B6B; color: #fff; }
+    .s-tab.active-income { background: #00B894; color: #fff; }
+    .bar-chart { display: flex; align-items: flex-end; overflow-x: auto; padding-bottom: 4px; min-height: 110px; gap: 2px; }
+    .bar-chart::-webkit-scrollbar { display: none; }
+    .bar-col { width: 22px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .bar-wrap { height: 90px; display: flex; align-items: flex-end; }
+    .bar-visual { width: 14px; border-radius: 4px; }
+    .bar-day { font-size: 9px; color: #ADB5BD; margin-top: 4px; }
+    .cat-stat-row { margin-bottom: 16px; }
+    .cat-stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .cat-stat-left { display: flex; align-items: center; gap: 8px; }
+    .cat-emoji { font-size: 18px; }
+    .cat-stat-name { font-size: 14px; font-weight: 600; color: #2D3436; }
+    .cat-stat-right { text-align: right; }
+    .cat-stat-amount { font-size: 14px; font-weight: 700; color: #2D3436; }
+    .cat-stat-pct { font-size: 11px; color: #6C757D; }
+    .s-progress-bg { height: 8px; background: #F1F3F5; border-radius: 4px; overflow: hidden; }
+    .s-progress-bar { height: 8px; border-radius: 4px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+  </style>
+</head>
+<body>
+  <h1>💰 MoneyBook 앱 미리보기</h1>
+  <div class="screen-tabs">
+    <button class="screen-tab active" onclick="showScreen('home')">🏠 홈</button>
+    <button class="screen-tab" onclick="showScreen('add')">➕ 추가</button>
+    <button class="screen-tab" onclick="showScreen('budget')">📊 예산</button>
+    <button class="screen-tab" onclick="showScreen('stats')">📈 통계</button>
+  </div>
+
+  <div class="phone">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>●●●</span>
+    </div>
+
+    <!-- HOME SCREEN -->
+    <div class="screen active screen-content" id="home">
+      <div class="month-nav">
+        <span class="arrow">‹</span>
+        <span class="month-text">2026년 3월</span>
+        <span class="arrow">›</span>
+      </div>
+      <div class="summary-card">
+        <div class="summary-row">
+          <div class="summary-item">
+            <div class="summary-label">수입</div>
+            <div class="summary-amount" style="color:#00B894">2,500,000원</div>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-item">
+            <div class="summary-label">지출</div>
+            <div class="summary-amount" style="color:#FF6B6B">1,247,500원</div>
+          </div>
+        </div>
+        <div class="balance-row">
+          <span class="balance-label">잔액</span>
+          <span class="balance-amount">+1,252,500원</span>
+        </div>
+      </div>
+
+      <div class="section-title">거래 내역</div>
+
+      <div class="transaction-item">
+        <div class="cat-icon" style="background:#FF6B6B22">🍔</div>
+        <div class="t-info">
+          <div class="t-title">점심 식사</div>
+          <div class="t-sub">식비 · 3/6</div>
+        </div>
+        <div class="t-amount" style="color:#FF6B6B">-12,000원</div>
+      </div>
+      <div class="transaction-item">
+        <div class="cat-icon" style="background:#00B89422">💼</div>
+        <div class="t-info">
+          <div class="t-title">3월 급여</div>
+          <div class="t-sub">급여 · 3/5</div>
+        </div>
+        <div class="t-amount" style="color:#00B894">+2,500,000원</div>
+      </div>
+      <div class="transaction-item">
+        <div class="cat-icon" style="background:#0984E322">🚇</div>
+        <div class="t-info">
+          <div class="t-title">교통카드 충전</div>
+          <div class="t-sub">교통 · 3/5</div>
+        </div>
+        <div class="t-amount" style="color:#FF6B6B">-50,000원</div>
+      </div>
+      <div class="transaction-item">
+        <div class="cat-icon" style="background:#FDCB6E22">🛒</div>
+        <div class="t-info">
+          <div class="t-title">마트 장보기</div>
+          <div class="t-sub">장보기 · 3/4</div>
+        </div>
+        <div class="t-amount" style="color:#FF6B6B">-85,500원</div>
+      </div>
+      <div class="transaction-item">
+        <div class="cat-icon" style="background:#A29BFE22">🎮</div>
+        <div class="t-info">
+          <div class="t-title">게임 구독</div>
+          <div class="t-sub">취미 · 3/3</div>
+        </div>
+        <div class="t-amount" style="color:#FF6B6B">-15,000원</div>
+      </div>
+      <div class="transaction-item">
+        <div class="cat-icon" style="background:#FF6B6B22">🍔</div>
+        <div class="t-info">
+          <div class="t-title">저녁 외식</div>
+          <div class="t-sub">식비 · 3/2</div>
+        </div>
+        <div class="t-amount" style="color:#FF6B6B">-35,000원</div>
+      </div>
+
+      <div class="fab">+</div>
+    </div>
+
+    <!-- ADD SCREEN -->
+    <div class="screen screen-content" id="add">
+      <div class="header">거래 추가</div>
+      <div style="height:14px"></div>
+      <div class="type-selector">
+        <div class="type-btn expense-active">지출</div>
+        <div class="type-btn">수입</div>
+      </div>
+      <div class="input-card">
+        <div class="input-label">금액</div>
+        <div class="amount-display">
+          <div class="amount-value">35,000</div>
+          <div class="amount-unit">원</div>
+        </div>
+      </div>
+      <div class="input-card">
+        <div class="input-label">날짜</div>
+        <div class="date-value">2026-03-06</div>
+      </div>
+      <div class="input-card">
+        <div class="input-label">카테고리</div>
+        <div class="cat-grid">
+          <div class="cat-grid-item selected">
+            <div class="cat-icon-small" style="background:#FF6B6B22">🍔</div>
+            <div class="cat-name" style="color:#FF6B6B">식비</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#0984E322">🚇</div>
+            <div class="cat-name">교통</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#FDCB6E22">🛒</div>
+            <div class="cat-name">장보기</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#6C5CE722">🏠</div>
+            <div class="cat-name">주거</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#A29BFE22">🎮</div>
+            <div class="cat-name">취미</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#00CEC922">💊</div>
+            <div class="cat-name">의료</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#E1730022">👗</div>
+            <div class="cat-name">의류</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#D6336C22">📚</div>
+            <div class="cat-name">교육</div>
+          </div>
+          <div class="cat-grid-item">
+            <div class="cat-icon-small" style="background:#74B9FF22">✈️</div>
+            <div class="cat-name">여행</div>
+          </div>
+        </div>
+      </div>
+      <div class="input-card">
+        <div class="input-label">메모 (선택)</div>
+        <div class="date-value" style="color:#ADB5BD">저녁 외식</div>
+      </div>
+      <button class="save-btn">저장하기</button>
+    </div>
+
+    <!-- BUDGET SCREEN -->
+    <div class="screen screen-content" id="budget">
+      <div class="header">예산 관리</div>
+      <div class="total-budget-card">
+        <div class="tb-title">3월 전체 예산</div>
+        <div class="tb-amount">1,500,000원</div>
+        <div class="tb-row">
+          <div class="tb-item">
+            <div class="tb-item-label">사용</div>
+            <div class="tb-item-value" style="color:#FFB3B3">1,247,500원</div>
+          </div>
+          <div class="tb-item">
+            <div class="tb-item-label">남은 예산</div>
+            <div class="tb-item-value" style="color:#A8F0E0">252,500원</div>
+          </div>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-bar" style="width:83%;background:#fff"></div>
+        </div>
+        <div class="progress-text">83% 사용</div>
+      </div>
+
+      <div class="section-title" style="margin-top:4px">카테고리별 예산 설정</div>
+
+      <div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-left">
+            <div class="b-icon" style="background:#FF6B6B22">🍔</div>
+            <div class="b-name">식비</div>
+          </div>
+          <div class="set-budget-btn">500,000원</div>
+        </div>
+        <div class="spent-row">
+          <div class="spent-label">사용: <strong style="color:#FF6B6B">420,000원</strong></div>
+          <div class="remain-label">남음: 80,000원</div>
+        </div>
+        <div class="b-progress-bg">
+          <div class="b-progress-bar" style="width:84%;background:#FF6B6B"></div>
+        </div>
+      </div>
+
+      <div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-left">
+            <div class="b-icon" style="background:#0984E322">🚇</div>
+            <div class="b-name">교통</div>
+          </div>
+          <div class="set-budget-btn">150,000원</div>
+        </div>
+        <div class="spent-row">
+          <div class="spent-label">사용: <strong style="color:#FF6B6B">50,000원</strong></div>
+          <div class="remain-label">남음: 100,000원</div>
+        </div>
+        <div class="b-progress-bg">
+          <div class="b-progress-bar" style="width:33%;background:#0984E3"></div>
+        </div>
+      </div>
+
+      <div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-left">
+            <div class="b-icon" style="background:#FDCB6E22">🛒</div>
+            <div class="b-name">장보기</div>
+          </div>
+          <div class="set-budget-btn">300,000원</div>
+        </div>
+        <div class="spent-row">
+          <div class="spent-label">사용: <strong style="color:#FF6B6B">385,000원</strong></div>
+          <div class="remain-label" style="color:#FF6B6B">초과: 85,000원</div>
+        </div>
+        <div class="b-progress-bg">
+          <div class="b-progress-bar" style="width:100%;background:#FF6B6B"></div>
+        </div>
+        <div style="font-size:12px;color:#FF6B6B;font-weight:600;margin-top:6px;text-align:right">⚠️ 예산을 초과했습니다!</div>
+      </div>
+
+      <div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-left">
+            <div class="b-icon" style="background:#A29BFE22">🎮</div>
+            <div class="b-name">취미</div>
+          </div>
+          <div class="set-budget-btn" style="color:#6C5CE7;background:#EEEAFF">100,000원</div>
+        </div>
+        <div class="spent-row">
+          <div class="spent-label">사용: <strong style="color:#FF6B6B">15,000원</strong></div>
+          <div class="remain-label">남음: 85,000원</div>
+        </div>
+        <div class="b-progress-bg">
+          <div class="b-progress-bar" style="width:15%;background:#A29BFE"></div>
+        </div>
+      </div>
+
+      <div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-left">
+            <div class="b-icon" style="background:#6C5CE722">🏠</div>
+            <div class="b-name">주거</div>
+          </div>
+          <div class="set-budget-btn">예산 설정</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS SCREEN -->
+    <div class="screen screen-content" id="stats">
+      <div class="month-nav">
+        <span class="arrow">‹</span>
+        <span class="month-text">2026년 3월</span>
+        <span class="arrow">›</span>
+      </div>
+      <div class="stats-summary">
+        <div class="stat-card income">
+          <div class="stat-label">총 수입</div>
+          <div class="stat-amount" style="color:#00B894">2,500,000원</div>
+        </div>
+        <div class="stat-card expense">
+          <div class="stat-label">총 지출</div>
+          <div class="stat-amount" style="color:#FF6B6B">1,247,500원</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">일별 현황</div>
+          <div class="tab-row">
+            <div class="s-tab active-expense">지출</div>
+            <div class="s-tab">수입</div>
+          </div>
+        </div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:16px">카테고리별 지출</div>
+
+        <div class="cat-stat-row">
+          <div class="cat-stat-header">
+            <div class="cat-stat-left">
+              <span class="cat-emoji">🍔</span>
+              <span class="cat-stat-name">식비</span>
+            </div>
+            <div class="cat-stat-right">
+              <div class="cat-stat-amount">420,000원</div>
+              <div class="cat-stat-pct">34%</div>
+            </div>
+          </div>
+          <div class="s-progress-bg"><div class="s-progress-bar" style="width:100%;background:#FF6B6B"></div></div>
+        </div>
+
+        <div class="cat-stat-row">
+          <div class="cat-stat-header">
+            <div class="cat-stat-left">
+              <span class="cat-emoji">🛒</span>
+              <span class="cat-stat-name">장보기</span>
+            </div>
+            <div class="cat-stat-right">
+              <div class="cat-stat-amount">385,000원</div>
+              <div class="cat-stat-pct">31%</div>
+            </div>
+          </div>
+          <div class="s-progress-bg"><div class="s-progress-bar" style="width:92%;background:#FDCB6E"></div></div>
+        </div>
+
+        <div class="cat-stat-row">
+          <div class="cat-stat-header">
+            <div class="cat-stat-left">
+              <span class="cat-emoji">💊</span>
+              <span class="cat-stat-name">의료</span>
+            </div>
+            <div class="cat-stat-right">
+              <div class="cat-stat-amount">277,500원</div>
+              <div class="cat-stat-pct">22%</div>
+            </div>
+          </div>
+          <div class="s-progress-bg"><div class="s-progress-bar" style="width:66%;background:#00CEC9"></div></div>
+        </div>
+
+        <div class="cat-stat-row">
+          <div class="cat-stat-header">
+            <div class="cat-stat-left">
+              <span class="cat-emoji">🚇</span>
+              <span class="cat-stat-name">교통</span>
+            </div>
+            <div class="cat-stat-right">
+              <div class="cat-stat-amount">50,000원</div>
+              <div class="cat-stat-pct">4%</div>
+            </div>
+          </div>
+          <div class="s-progress-bg"><div class="s-progress-bar" style="width:12%;background:#0984E3"></div></div>
+        </div>
+
+        <div class="cat-stat-row">
+          <div class="cat-stat-header">
+            <div class="cat-stat-left">
+              <span class="cat-emoji">🎮</span>
+              <span class="cat-stat-name">취미</span>
+            </div>
+            <div class="cat-stat-right">
+              <div class="cat-stat-amount">15,000원</div>
+              <div class="cat-stat-pct">1%</div>
+            </div>
+          </div>
+          <div class="s-progress-bg"><div class="s-progress-bar" style="width:4%;background:#A29BFE"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="nav-bar">
+      <div class="nav-item active" onclick="showScreen('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label" style="color:#6C5CE7">홈</span>
+      </div>
+      <div class="nav-item" onclick="showScreen('stats')">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">통계</span>
+      </div>
+      <div class="nav-item" onclick="showScreen('budget')">
+        <span class="nav-icon">💰</span>
+        <span class="nav-label">예산</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Bar chart generation
+    const data = {1:0,2:35000,3:15000,4:85500,5:50000,6:12000};
+    const maxVal = Math.max(...Object.values(data), 1);
+    const chart = document.getElementById('barChart');
+    for (let d = 1; d <= 31; d++) {
+      const amt = data[d] || 0;
+      const h = amt > 0 ? Math.max((amt / maxVal) * 80, 6) : 2;
+      const col = document.createElement('div');
+      col.className = 'bar-col';
+      col.innerHTML = `
+        <div class="bar-wrap">
+          <div class="bar-visual" style="height:${h}px;background:${amt>0?'#FF6B6B':'#F1F3F5'}"></div>
+        </div>
+        <div class="bar-day">${d}</div>
+      `;
+      chart.appendChild(col);
+    }
+
+    function showScreen(name) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.screen-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(name).classList.add('active');
+      const tabs = ['home','add','budget','stats'];
+      document.querySelectorAll('.screen-tab')[tabs.indexOf(name)].classList.add('active');
+
+      // update nav
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.querySelector('.nav-label').style.color = '#ADB5BD';
+      });
+      if (name === 'home') document.querySelectorAll('.nav-item')[0].querySelector('.nav-label').style.color = '#6C5CE7';
+      if (name === 'stats') document.querySelectorAll('.nav-item')[1].querySelector('.nav-label').style.color = '#6C5CE7';
+      if (name === 'budget') document.querySelectorAll('.nav-item')[2].querySelector('.nav-label').style.color = '#6C5CE7';
+    }
+  </script>
+</body>
+</html>
