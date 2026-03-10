@@ -8,22 +8,16 @@
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
       background: #1a1a2e;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       padding: 16px 16px 30px;
     }
     h1 { color: #fff; margin-bottom: 14px; font-size: 20px; letter-spacing: 1px; }
 
-    .screen-tabs {
-      display: flex; gap: 8px; margin-bottom: 18px;
-      width: 100%; max-width: 375px;
-    }
+    .screen-tabs { display: flex; gap: 6px; margin-bottom: 18px; width: 100%; max-width: 375px; }
     .screen-tab {
-      flex: 1; padding: 10px 6px; border-radius: 20px; border: none;
-      cursor: pointer; font-size: 13px; font-weight: 600;
+      flex: 1; padding: 9px 4px; border-radius: 20px; border: none;
+      cursor: pointer; font-size: 12px; font-weight: 600;
       background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); transition: all 0.2s;
     }
     .screen-tab.active { background: #6C5CE7; color: #fff; }
@@ -39,34 +33,27 @@
       display: flex; justify-content: space-between;
       font-size: 12px; font-weight: 600; color: #2D3436; flex-shrink: 0;
     }
-    .screen-content {
-      flex: 1; overflow-y: auto; overflow-x: hidden;
-      -webkit-overflow-scrolling: touch; padding-bottom: 30px;
-    }
+    .screen-content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 30px; }
     .screen-content::-webkit-scrollbar { display: none; }
     .screen { display: none; }
     .screen.active { display: block; }
 
     .month-nav {
       background: #fff; display: flex; align-items: center; justify-content: center;
-      padding: 14px 0; border-bottom: 1px solid #E9ECEF;
+      padding: 10px 0; border-bottom: 1px solid #E9ECEF; flex-direction: column; gap: 2px;
     }
-    .arrow { font-size: 28px; color: #6C757D; padding: 0 24px; cursor: pointer; user-select: none; }
-    .month-text { font-size: 18px; font-weight: 700; color: #2D3436; min-width: 120px; text-align: center; }
+    .month-nav-row { display: flex; align-items: center; justify-content: center; }
+    .arrow { font-size: 28px; color: #6C757D; padding: 0 20px; cursor: pointer; user-select: none; }
+    .month-text { font-size: 17px; font-weight: 700; color: #2D3436; min-width: 110px; text-align: center; }
+    .period-sub { font-size: 11px; color: #6C5CE7; font-weight: 600; }
 
-    .summary-card {
-      margin: 14px; background: #fff; border-radius: 16px;
-      padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    }
+    .summary-card { margin: 14px; background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
     .summary-row { display: flex; margin-bottom: 14px; }
     .summary-item { flex: 1; text-align: center; }
     .summary-divider { width: 1px; background: #E9ECEF; }
     .summary-label { font-size: 13px; color: #6C757D; margin-bottom: 6px; }
     .summary-amount { font-size: 18px; font-weight: 800; }
-    .balance-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-top: 14px; border-top: 1px solid #E9ECEF;
-    }
+    .balance-row { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid #E9ECEF; }
     .balance-label { font-size: 15px; color: #6C757D; font-weight: 600; }
     .balance-amount { font-size: 20px; font-weight: 800; }
 
@@ -76,51 +63,33 @@
       display: flex; align-items: center; background: #fff; border-radius: 12px;
       padding: 14px; margin: 0 14px 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.05);
     }
-    .cat-icon {
-      width: 44px; height: 44px; border-radius: 22px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; margin-right: 12px; flex-shrink: 0;
-    }
+    .cat-icon { width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-right: 12px; flex-shrink: 0; }
     .t-info { flex: 1; min-width: 0; }
     .t-title { font-size: 15px; font-weight: 600; color: #2D3436; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .t-sub { font-size: 12px; color: #6C757D; }
     .t-amount { font-size: 16px; font-weight: 700; flex-shrink: 0; margin-left: 8px; }
 
-    /* FAB - fixed relative to phone */
-    .fab-wrapper {
-      position: relative; width: 100%; max-width: 375px;
-      height: 0; pointer-events: none;
-    }
-    .fab {
-      position: absolute; bottom: 80px; right: 16px;
-      width: 58px; height: 58px; border-radius: 29px;
-      background: #6C5CE7;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px; color: #fff; font-weight: 300;
-      box-shadow: 0 6px 20px rgba(108,92,231,0.5);
-      cursor: pointer; border: none; line-height: 1;
-      pointer-events: auto; z-index: 50;
+    /* SMS quick button */
+    .sms-btn-wrap { margin: 0 14px 12px; }
+    .sms-btn {
+      width: 100%; padding: 12px; border-radius: 12px; border: 2px dashed #6C5CE7;
+      background: rgba(108,92,231,0.06); color: #6C5CE7;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
 
-    .empty-state {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 50px 20px;
-    }
+    .fab { position: absolute; bottom: 24px; right: 20px; width: 58px; height: 58px; border-radius: 29px; background: #6C5CE7; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; font-weight: 300; box-shadow: 0 6px 20px rgba(108,92,231,0.5); cursor: pointer; border: none; line-height: 1; }
+
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px; }
     .empty-icon { font-size: 50px; margin-bottom: 14px; }
     .empty-text { font-size: 16px; color: #6C757D; font-weight: 600; margin-bottom: 6px; }
     .empty-sub { font-size: 13px; color: #ADB5BD; }
+    .delete-hint { font-size: 11px; color: #ADB5BD; text-align: center; margin: -4px 0 8px; }
 
-    .header {
-      background: #fff; padding: 14px 0; text-align: center;
-      font-size: 17px; font-weight: 700; color: #2D3436;
-      border-bottom: 1px solid #E9ECEF; flex-shrink: 0;
-    }
+    .header { background: #fff; padding: 14px 0; text-align: center; font-size: 17px; font-weight: 700; color: #2D3436; border-bottom: 1px solid #E9ECEF; flex-shrink: 0; }
 
     /* Budget */
-    .total-budget-card {
-      margin: 14px; background: #6C5CE7; border-radius: 16px;
-      padding: 20px; box-shadow: 0 6px 20px rgba(108,92,231,0.4); color: #fff;
-    }
+    .total-budget-card { margin: 14px; background: #6C5CE7; border-radius: 16px; padding: 20px; box-shadow: 0 6px 20px rgba(108,92,231,0.4); color: #fff; }
     .tb-title { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 4px; }
     .tb-amount { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
     .tb-row { display: flex; margin-bottom: 14px; }
@@ -130,11 +99,7 @@
     .progress-bg { height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
     .progress-bar { height: 8px; border-radius: 4px; }
     .progress-text { font-size: 11px; color: rgba(255,255,255,0.8); text-align: right; }
-
-    .budget-card {
-      background: #fff; border-radius: 12px; margin: 0 14px 10px; padding: 16px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-    }
+    .budget-card { background: #fff; border-radius: 12px; margin: 0 14px 10px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
     .budget-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
     .budget-left { display: flex; align-items: center; }
     .b-icon { width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 10px; }
@@ -147,14 +112,8 @@
     .b-progress-bg { height: 8px; background: #F1F3F5; border-radius: 4px; overflow: hidden; }
     .b-progress-bar { height: 8px; border-radius: 4px; }
     .over-budget-text { font-size: 12px; color: #FF6B6B; font-weight: 600; margin-top: 6px; text-align: right; }
-
     .budget-fab-wrap { padding: 14px 14px 8px; }
-    .budget-fab {
-      width: 100%; padding: 14px; border-radius: 14px; border: none;
-      background: #6C5CE7; color: #fff; font-size: 15px; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-      box-shadow: 0 4px 14px rgba(108,92,231,0.4);
-    }
+    .budget-fab { width: 100%; padding: 14px; border-radius: 14px; border: none; background: #6C5CE7; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(108,92,231,0.4); }
 
     /* Stats */
     .stats-summary { display: flex; padding: 14px; gap: 12px; }
@@ -186,73 +145,91 @@
     .s-progress-bg { height: 8px; background: #F1F3F5; border-radius: 4px; overflow: hidden; }
     .s-progress-bar { height: 8px; border-radius: 4px; }
 
+    /* ===== SETTINGS ===== */
+    .settings-section { margin: 14px; }
+    .settings-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.05); margin-bottom: 14px; }
+    .settings-card-title { font-size: 13px; font-weight: 700; color: #6C757D; text-transform: uppercase; letter-spacing: 0.5px; padding: 14px 16px 8px; }
+    .settings-row { display: flex; align-items: center; padding: 14px 16px; border-top: 1px solid #F1F3F5; }
+    .settings-row:first-of-type { border-top: none; }
+    .settings-icon { font-size: 20px; margin-right: 12px; width: 28px; text-align: center; }
+    .settings-label { flex: 1; }
+    .settings-label-main { font-size: 15px; font-weight: 600; color: #2D3436; }
+    .settings-label-sub { font-size: 12px; color: #ADB5BD; margin-top: 2px; }
+    .settings-value { font-size: 14px; color: #6C5CE7; font-weight: 700; }
+    .settings-select {
+      border: 1.5px solid #E9ECEF; border-radius: 8px; padding: 6px 10px;
+      font-size: 14px; font-weight: 600; color: #6C5CE7; background: #F8F9FA;
+      outline: none; cursor: pointer; -webkit-appearance: none; appearance: none;
+      padding-right: 24px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236C5CE7' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 8px center;
+    }
+    .period-preview { background: linear-gradient(135deg, #6C5CE7, #a29bfe); border-radius: 12px; padding: 16px; margin: 0 14px 14px; color: #fff; }
+    .period-preview-title { font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 8px; font-weight: 600; }
+    .period-preview-dates { font-size: 16px; font-weight: 800; }
+    .period-preview-sub { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+    /* Info card */
+    .info-card { background: #fff; border-radius: 16px; padding: 16px; margin: 0 14px 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 4px solid #FDCB6E; }
+    .info-card-title { font-size: 14px; font-weight: 700; color: #2D3436; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .info-card-body { font-size: 13px; color: #6C757D; line-height: 1.7; }
+    .info-card-body strong { color: #2D3436; }
+    .info-card-steps { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .info-step { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #6C757D; }
+    .info-step-num { background: #6C5CE7; color: #fff; width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .mydata-badge { display: inline-block; background: #E8F4FD; color: #0984E3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-right: 4px; }
+
     /* ===== MODAL ===== */
-    .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6); z-index: 200; align-items: flex-end; justify-content: center;
-    }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: flex-end; justify-content: center; }
     .modal-overlay.open { display: flex; }
-    .modal {
-      background: #fff; border-radius: 24px 24px 0 0;
-      padding: 24px 20px 40px; width: 100%; max-width: 375px;
-      max-height: 90vh; overflow-y: auto;
-      animation: slideUp 0.3s ease;
-    }
+    .modal { background: #fff; border-radius: 24px 24px 0 0; padding: 24px 20px 40px; width: 100%; max-width: 375px; max-height: 92vh; overflow-y: auto; animation: slideUp 0.3s ease; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     .modal-handle { width: 40px; height: 4px; background: #E9ECEF; border-radius: 2px; margin: 0 auto 20px; }
     .modal-title { font-size: 18px; font-weight: 700; color: #2D3436; margin-bottom: 20px; text-align: center; }
 
     .type-toggle { display: flex; background: #F8F9FA; border-radius: 12px; padding: 4px; margin-bottom: 18px; }
-    .type-btn {
-      flex: 1; padding: 12px; border-radius: 8px; text-align: center;
-      font-size: 15px; font-weight: 600; color: #ADB5BD; cursor: pointer;
-      border: none; background: transparent; transition: all 0.2s;
-    }
+    .type-btn { flex: 1; padding: 12px; border-radius: 8px; text-align: center; font-size: 15px; font-weight: 600; color: #ADB5BD; cursor: pointer; border: none; background: transparent; transition: all 0.2s; }
     .type-btn.expense-active { background: #FF6B6B; color: #fff; box-shadow: 0 2px 8px rgba(255,107,107,0.4); }
     .type-btn.income-active { background: #00B894; color: #fff; box-shadow: 0 2px 8px rgba(0,184,148,0.4); }
 
     .form-label { font-size: 12px; font-weight: 700; color: #6C757D; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
     .form-group { margin-bottom: 16px; }
-    .form-input {
-      width: 100%; border: 1.5px solid #E9ECEF; border-radius: 10px;
-      padding: 12px 14px; font-size: 16px; color: #2D3436;
-      background: #fff; outline: none; transition: border-color 0.2s;
-      -webkit-appearance: none;
-    }
+    .form-input { width: 100%; border: 1.5px solid #E9ECEF; border-radius: 10px; padding: 12px 14px; font-size: 16px; color: #2D3436; background: #fff; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
     .form-input:focus { border-color: #6C5CE7; }
     .amount-input { font-size: 24px; font-weight: 700; text-align: right; }
+    textarea.form-input { font-size: 13px; resize: none; height: 100px; line-height: 1.6; }
 
     .cat-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-    .cat-grid-item {
-      width: calc(33.33% - 6px); display: flex; flex-direction: column; align-items: center;
-      padding: 10px 6px; border-radius: 10px; border: 2px solid #E9ECEF;
-      cursor: pointer; transition: all 0.15s;
-    }
+    .cat-grid-item { width: calc(33.33% - 6px); display: flex; flex-direction: column; align-items: center; padding: 10px 6px; border-radius: 10px; border: 2px solid #E9ECEF; cursor: pointer; transition: all 0.15s; }
     .cat-grid-item.sel-expense { border-color: #FF6B6B; background: #FFF0F0; }
     .cat-grid-item.sel-income { border-color: #00B894; background: #F0FFF9; }
     .cat-icon-sm { font-size: 22px; margin-bottom: 5px; }
     .cat-name-sm { font-size: 11px; font-weight: 600; color: #6C757D; text-align: center; }
 
-    .save-btn {
-      width: 100%; padding: 16px; border-radius: 14px; border: none;
-      font-size: 16px; font-weight: 700; color: #fff; cursor: pointer;
-      margin-top: 8px; transition: opacity 0.2s;
-    }
+    .save-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 700; color: #fff; cursor: pointer; margin-top: 8px; transition: opacity 0.2s; }
     .save-btn:active { opacity: 0.85; }
     .save-btn.expense { background: #FF6B6B; box-shadow: 0 4px 14px rgba(255,107,107,0.4); }
     .save-btn.income { background: #00B894; box-shadow: 0 4px 14px rgba(0,184,148,0.4); }
     .save-btn.budget-color { background: #6C5CE7; box-shadow: 0 4px 14px rgba(108,92,231,0.4); }
+    .save-btn.sms-color { background: #6C5CE7; box-shadow: 0 4px 14px rgba(108,92,231,0.4); }
 
     .budget-cat-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
-    .budget-cat-item {
-      display: flex; align-items: center; padding: 12px 14px;
-      border: 2px solid #E9ECEF; border-radius: 12px; cursor: pointer; transition: all 0.15s;
-    }
+    .budget-cat-item { display: flex; align-items: center; padding: 12px 14px; border: 2px solid #E9ECEF; border-radius: 12px; cursor: pointer; transition: all 0.15s; }
     .budget-cat-item.selected { border-color: #6C5CE7; background: #F0EEFF; }
     .budget-cat-item-icon { font-size: 22px; margin-right: 12px; }
     .budget-cat-item-name { font-size: 15px; font-weight: 600; color: #2D3436; flex: 1; }
     .budget-cat-item-current { font-size: 12px; color: #ADB5BD; }
-    .delete-hint { font-size: 11px; color: #ADB5BD; text-align: center; margin-top: 4px; padding-bottom: 4px; }
+
+    /* SMS result */
+    .sms-result { background: #F8F9FA; border-radius: 12px; padding: 14px; margin-bottom: 14px; }
+    .sms-result-title { font-size: 12px; font-weight: 700; color: #6C757D; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sms-result-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #E9ECEF; }
+    .sms-result-row:last-child { border-bottom: none; }
+    .sms-result-label { font-size: 13px; color: #6C757D; }
+    .sms-result-value { font-size: 13px; font-weight: 700; color: #2D3436; }
+    .sms-examples { background: #F0EEFF; border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+    .sms-examples-title { font-size: 12px; font-weight: 700; color: #6C5CE7; margin-bottom: 8px; }
+    .sms-example { font-size: 11px; color: #6C757D; margin-bottom: 4px; font-family: monospace; background: #fff; padding: 4px 8px; border-radius: 6px; }
+    .parse-error { color: #FF6B6B; font-size: 13px; font-weight: 600; text-align: center; padding: 10px; }
   </style>
 </head>
 <body>
@@ -261,6 +238,7 @@
     <button class="screen-tab active" onclick="showScreen('home')">🏠 홈</button>
     <button class="screen-tab" onclick="showScreen('budget')">💰 예산</button>
     <button class="screen-tab" onclick="showScreen('stats')">📈 통계</button>
+    <button class="screen-tab" onclick="showScreen('settings')">⚙️ 설정</button>
   </div>
 
   <div class="phone">
@@ -268,12 +246,15 @@
       <span id="clockDisplay">9:41</span><span>●●●</span>
     </div>
 
-    <!-- HOME -->
+    <!-- ===== HOME ===== -->
     <div class="screen active screen-content" id="home">
       <div class="month-nav">
-        <span class="arrow" onclick="changeMonth(-1)">‹</span>
-        <span class="month-text" id="homeMonthText"></span>
-        <span class="arrow" onclick="changeMonth(1)">›</span>
+        <div class="month-nav-row">
+          <span class="arrow" onclick="changeMonth(-1)">‹</span>
+          <span class="month-text" id="homeMonthText"></span>
+          <span class="arrow" onclick="changeMonth(1)">›</span>
+        </div>
+        <div class="period-sub" id="homePeriodSub"></div>
       </div>
       <div class="summary-card">
         <div class="summary-row">
@@ -292,12 +273,17 @@
           <span class="balance-amount" id="totalBalance">0원</span>
         </div>
       </div>
+      <div class="sms-btn-wrap">
+        <button class="sms-btn" onclick="openSMSModal()">
+          📩 문자(SMS) 붙여넣기로 자동 등록
+        </button>
+      </div>
       <div class="section-title">거래 내역</div>
-      <div class="delete-hint">거래 항목을 길게 누르면 삭제됩니다</div>
+      <div class="delete-hint">길게 누르면 삭제됩니다</div>
       <div id="transactionList"></div>
     </div>
 
-    <!-- BUDGET -->
+    <!-- ===== BUDGET ===== -->
     <div class="screen screen-content" id="budget">
       <div class="header">예산 관리</div>
       <div id="budgetTotalCard"></div>
@@ -310,12 +296,15 @@
       <div id="budgetList"></div>
     </div>
 
-    <!-- STATS -->
+    <!-- ===== STATS ===== -->
     <div class="screen screen-content" id="stats">
       <div class="month-nav">
-        <span class="arrow" onclick="changeMonth(-1)">‹</span>
-        <span class="month-text" id="statsMonthText"></span>
-        <span class="arrow" onclick="changeMonth(1)">›</span>
+        <div class="month-nav-row">
+          <span class="arrow" onclick="changeMonth(-1)">‹</span>
+          <span class="month-text" id="statsMonthText"></span>
+          <span class="arrow" onclick="changeMonth(1)">›</span>
+        </div>
+        <div class="period-sub" id="statsPeriodSub"></div>
       </div>
       <div class="stats-summary">
         <div class="stat-card income">
@@ -343,11 +332,115 @@
       </div>
     </div>
 
-    <!-- Home FAB (inside phone so it stays positioned correctly) -->
-    <button class="fab" id="homeFab" onclick="openTransactionModal()" style="position:absolute;bottom:24px;right:20px">+</button>
+    <!-- ===== SETTINGS ===== -->
+    <div class="screen screen-content" id="settings">
+      <div class="header">설정</div>
+
+      <!-- Period preview -->
+      <div id="periodPreview" style="margin-top:14px"></div>
+
+      <!-- Salary day -->
+      <div class="settings-section" style="margin-top:0">
+        <div class="settings-card">
+          <div class="settings-card-title">기간 설정</div>
+          <div class="settings-row">
+            <div class="settings-icon">📅</div>
+            <div class="settings-label">
+              <div class="settings-label-main">급여일 / 기간 시작일</div>
+              <div class="settings-label-sub">이 날짜부터 다음 달 전날까지를 한 기간으로 계산</div>
+            </div>
+            <select class="settings-select" id="salaryDaySelect" onchange="saveSalaryDay(this.value)">
+              <option value="1">1일 (월초)</option>
+              <option value="5">5일</option>
+              <option value="10">10일</option>
+              <option value="15">15일</option>
+              <option value="20">20일</option>
+              <option value="21">21일</option>
+              <option value="22">22일</option>
+              <option value="23">23일</option>
+              <option value="24">24일</option>
+              <option value="25">25일</option>
+              <option value="26">26일</option>
+              <option value="27">27일</option>
+              <option value="28">28일</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- SMS / 마이데이터 안내 -->
+      <div class="settings-section" style="margin-top:0">
+        <div class="settings-card">
+          <div class="settings-card-title">자동 거래 등록</div>
+          <div class="settings-row" onclick="openSMSModal()" style="cursor:pointer">
+            <div class="settings-icon">📩</div>
+            <div class="settings-label">
+              <div class="settings-label-main">문자(SMS) 자동 인식</div>
+              <div class="settings-label-sub">카드/은행 문자를 붙여넣으면 자동 등록</div>
+            </div>
+            <div class="settings-value">›</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 마이데이터 안내 -->
+      <div class="settings-section" style="margin-top:0">
+        <div class="info-card">
+          <div class="info-card-title">🏦 마이데이터 / 오픈뱅킹 연동 안내</div>
+          <div class="info-card-body">
+            실시간 마이데이터 연동은 <strong>금융결제원 오픈뱅킹 API</strong>와 백엔드 서버가 필요합니다.
+            현재 웹 앱에서는 직접 연동이 불가하지만, 아래 방법으로 사용 가능합니다:
+            <div class="info-card-steps">
+              <div class="info-step">
+                <div class="info-step-num">1</div>
+                <div><strong>SMS 붙여넣기</strong> — 카드/은행 결제 문자를 복사해서 위 버튼으로 자동 등록</div>
+              </div>
+              <div class="info-step">
+                <div class="info-step-num">2</div>
+                <div><strong>앱 카드 내역 복사</strong> — 토스·카카오뱅크 내역에서 금액 복사 후 수동 입력</div>
+              </div>
+              <div class="info-step">
+                <div class="info-step-num">3</div>
+                <div><strong>네이티브 앱 개발 시</strong> — <span class="mydata-badge">마이데이터</span>금융결제원 API 인증 후 자동 연동 가능</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 데이터 관리 -->
+      <div class="settings-section" style="margin-top:0">
+        <div class="settings-card">
+          <div class="settings-card-title">데이터 관리</div>
+          <div class="settings-row" onclick="exportData()" style="cursor:pointer">
+            <div class="settings-icon">📤</div>
+            <div class="settings-label">
+              <div class="settings-label-main">데이터 내보내기</div>
+              <div class="settings-label-sub">거래내역을 JSON 파일로 저장</div>
+            </div>
+            <div class="settings-value">›</div>
+          </div>
+          <div class="settings-row" onclick="clearAllData()" style="cursor:pointer">
+            <div class="settings-icon">🗑️</div>
+            <div class="settings-label">
+              <div class="settings-label-main" style="color:#FF6B6B">전체 데이터 삭제</div>
+              <div class="settings-label-sub">모든 거래 및 예산 초기화</div>
+            </div>
+            <div class="settings-value" style="color:#FF6B6B">›</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;color:#ADB5BD;font-size:12px;padding:10px 0 20px">
+        MoneyBook v2.0 · 데이터는 이 기기에만 저장됩니다
+      </div>
+    </div>
+
+    <!-- Home FAB -->
+    <button class="fab" id="homeFab" onclick="openTransactionModal()">+</button>
   </div>
 
-  <!-- TRANSACTION MODAL -->
+  <!-- ===== TRANSACTION MODAL ===== -->
   <div class="modal-overlay" id="transactionModal" onclick="closeModalOnOverlay(event,'transactionModal')">
     <div class="modal">
       <div class="modal-handle"></div>
@@ -376,7 +469,7 @@
     </div>
   </div>
 
-  <!-- BUDGET MODAL -->
+  <!-- ===== BUDGET MODAL ===== -->
   <div class="modal-overlay" id="budgetModal" onclick="closeModalOnOverlay(event,'budgetModal')">
     <div class="modal">
       <div class="modal-handle"></div>
@@ -393,33 +486,44 @@
     </div>
   </div>
 
+  <!-- ===== SMS MODAL ===== -->
+  <div class="modal-overlay" id="smsModal" onclick="closeModalOnOverlay(event,'smsModal')">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title">📩 문자 자동 인식</div>
+
+      <div class="sms-examples">
+        <div class="sms-examples-title">✅ 지원하는 문자 형식 예시</div>
+        <div class="sms-example">[KB국민카드] 홍길동 3/10 스타벅스 6,500원 승인</div>
+        <div class="sms-example">[신한카드] 승인 12,500원 CU편의점 03/10 15:30</div>
+        <div class="sms-example">[하나카드] 홍길동 승인 GS25 4,200원</div>
+        <div class="sms-example">[카카오뱅크] 급여 3,500,000원 입금</div>
+        <div class="sms-example">[NH농협은행] 출금 85,000원 이마트</div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">문자 내용 붙여넣기</div>
+        <textarea class="form-input" id="smsInput" placeholder="카드사/은행 문자를 여기에 붙여넣으세요..."></textarea>
+      </div>
+
+      <div id="smsParseResult"></div>
+
+      <button class="save-btn sms-color" onclick="processSMS()">인식하기</button>
+      <button class="save-btn" id="smsConfirmBtn" style="display:none;background:#00B894;margin-top:10px" onclick="confirmSMS()">이 거래 저장하기</button>
+    </div>
+  </div>
+
   <script>
-  // ===== DB (localStorage) =====
+  // ===== DB =====
   const DB = {
-    getTransactions() {
-      try { return JSON.parse(localStorage.getItem('mb_transactions') || '[]'); }
-      catch(e) { return []; }
-    },
-    saveTransactions(arr) {
-      localStorage.setItem('mb_transactions', JSON.stringify(arr));
-    },
-    addTransaction(t) {
-      const arr = this.getTransactions();
-      arr.unshift(t);
-      this.saveTransactions(arr);
-    },
-    deleteTransaction(id) {
-      this.saveTransactions(this.getTransactions().filter(t => t.id !== id));
-    },
-    getBudgets() {
-      try { return JSON.parse(localStorage.getItem('mb_budgets') || '{}'); }
-      catch(e) { return {}; }
-    },
-    saveBudgetEntry(categoryId, amount) {
-      const b = this.getBudgets();
-      b[categoryId] = amount;
-      localStorage.setItem('mb_budgets', JSON.stringify(b));
-    }
+    getTransactions() { try { return JSON.parse(localStorage.getItem('mb_transactions') || '[]'); } catch(e) { return []; } },
+    saveTransactions(arr) { localStorage.setItem('mb_transactions', JSON.stringify(arr)); },
+    addTransaction(t) { const a = this.getTransactions(); a.unshift(t); this.saveTransactions(a); },
+    deleteTransaction(id) { this.saveTransactions(this.getTransactions().filter(t => t.id !== id)); },
+    getBudgets() { try { return JSON.parse(localStorage.getItem('mb_budgets') || '{}'); } catch(e) { return {}; } },
+    saveBudgetEntry(catId, amount) { const b = this.getBudgets(); b[catId] = amount; localStorage.setItem('mb_budgets', JSON.stringify(b)); },
+    getSettings() { try { return JSON.parse(localStorage.getItem('mb_settings') || '{"salaryDay":1}'); } catch(e) { return {salaryDay:1}; } },
+    saveSettings(s) { localStorage.setItem('mb_settings', JSON.stringify(s)); }
   };
 
   // ===== CATEGORIES =====
@@ -443,11 +547,43 @@
     { id: 'other_income', name: '기타수입', icon: '💵', color: '#B2BEC3' },
   ];
   const ALL_CATS = [...INCOME_CATS, ...EXPENSE_CATS];
-  function getCat(id) {
-    return ALL_CATS.find(c => c.id === id) || { name: '기타', icon: '💸', color: '#B2BEC3' };
-  }
+  function getCat(id) { return ALL_CATS.find(c => c.id === id) || { name: '기타', icon: '💸', color: '#B2BEC3' }; }
   function fmt(n) { return Number(n).toLocaleString('ko-KR') + '원'; }
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+  function pad(n) { return String(n).padStart(2,'0'); }
+
+  // ===== PERIOD LOGIC =====
+  // Returns { start: Date, end: Date } for the given display month + salary day
+  // If salaryDay=1: standard month (Mar 1 ~ Mar 31)
+  // If salaryDay=25: Mar period = Feb 25 ~ Mar 24
+  function getPeriodRange(year, month, salaryDay) {
+    if (salaryDay <= 1) {
+      return {
+        start: new Date(year, month - 1, 1),
+        end: new Date(year, month, 0)
+      };
+    }
+    // The period labeled "month" ends on (salaryDay-1) of that month
+    // and starts on salaryDay of the previous month
+    const start = new Date(year, month - 2, salaryDay); // prev month
+    const end = new Date(year, month - 1, salaryDay - 1); // this month
+    return { start, end };
+  }
+
+  function isInPeriod(dateStr, year, month, salaryDay) {
+    const d = new Date(dateStr);
+    const { start, end } = getPeriodRange(year, month, salaryDay);
+    const ds = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const e = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    return ds >= s && ds <= e;
+  }
+
+  function periodLabel(year, month, salaryDay) {
+    if (salaryDay <= 1) return null; // no sub label needed
+    const { start, end } = getPeriodRange(year, month, salaryDay);
+    return `${start.getMonth()+1}/${start.getDate()} ~ ${end.getMonth()+1}/${end.getDate()}`;
+  }
 
   // ===== STATE =====
   let currentYear = new Date().getFullYear();
@@ -456,12 +592,12 @@
   let selectedCatId = null;
   let statsTab = 'expense';
   let selectedBudgetCatId = null;
+  let parsedSMSData = null;
 
   // Clock
   function updateClock() {
     const now = new Date();
-    document.getElementById('clockDisplay').textContent =
-      now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('clockDisplay').textContent = now.getHours() + ':' + pad(now.getMinutes());
   }
   updateClock(); setInterval(updateClock, 30000);
 
@@ -470,9 +606,10 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.screen-tab').forEach(t => t.classList.remove('active'));
     document.getElementById(name).classList.add('active');
-    const tabs = ['home','budget','stats'];
+    const tabs = ['home','budget','stats','settings'];
     document.querySelectorAll('.screen-tab')[tabs.indexOf(name)].classList.add('active');
     document.getElementById('homeFab').style.display = name === 'home' ? 'flex' : 'none';
+    if (name === 'settings') renderSettings();
     renderAll();
   }
 
@@ -483,19 +620,24 @@
     renderAll();
   }
 
-  // ===== RENDER =====
-  function getMonthTransactions() {
-    return DB.getTransactions().filter(t => {
-      const d = new Date(t.date);
-      return d.getFullYear() === currentYear && d.getMonth() + 1 === currentMonth;
-    });
+  // ===== TRANSACTIONS FOR PERIOD =====
+  function getPeriodTransactions() {
+    const { salaryDay } = DB.getSettings();
+    return DB.getTransactions().filter(t => isInPeriod(t.date, currentYear, currentMonth, salaryDay));
   }
 
+  // ===== RENDER ALL =====
   function renderAll() {
+    const { salaryDay } = DB.getSettings();
     const label = currentYear + '년 ' + currentMonth + '월';
+    const sub = periodLabel(currentYear, currentMonth, salaryDay);
+
     document.getElementById('homeMonthText').textContent = label;
+    document.getElementById('homePeriodSub').textContent = sub ? `(${sub})` : '';
     document.getElementById('statsMonthText').textContent = label;
-    const txs = getMonthTransactions();
+    document.getElementById('statsPeriodSub').textContent = sub ? `(${sub})` : '';
+
+    const txs = getPeriodTransactions();
     renderHome(txs);
     renderBudget(txs);
     renderStats(txs);
@@ -505,7 +647,6 @@
     let income = 0, expense = 0;
     txs.forEach(t => t.type === 'income' ? (income += t.amount) : (expense += t.amount));
     const bal = income - expense;
-
     document.getElementById('totalIncome').textContent = fmt(income);
     document.getElementById('totalExpense').textContent = fmt(expense);
     const balEl = document.getElementById('totalBalance');
@@ -514,11 +655,7 @@
 
     const list = document.getElementById('transactionList');
     if (txs.length === 0) {
-      list.innerHTML = `<div class="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-text">이번 달 거래가 없습니다</div>
-        <div class="empty-sub">+ 버튼으로 추가해보세요!</div>
-      </div>`;
+      list.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">이번 기간 거래가 없습니다</div><div class="empty-sub">+ 버튼 또는 SMS 자동 등록을 이용해보세요!</div></div>`;
       return;
     }
     list.innerHTML = txs.map(t => {
@@ -526,28 +663,21 @@
       const isIncome = t.type === 'income';
       const d = new Date(t.date);
       const ds = (d.getMonth()+1) + '/' + d.getDate();
+      const autoTag = t.auto ? ' <span style="font-size:10px;background:#E8F4FD;color:#0984E3;padding:1px 5px;border-radius:4px;font-weight:600">SMS</span>' : '';
       return `<div class="transaction-item" ontouchstart="" oncontextmenu="deleteT('${t.id}');return false;" ondblclick="deleteT('${t.id}')">
         <div class="cat-icon" style="background:${cat.color}22">${cat.icon}</div>
         <div class="t-info">
-          <div class="t-title">${t.memo || cat.name}</div>
+          <div class="t-title">${t.memo || cat.name}${autoTag}</div>
           <div class="t-sub">${cat.name} · ${ds}</div>
         </div>
-        <div class="t-amount" style="color:${isIncome?'#00B894':'#FF6B6B'}">
-          ${isIncome?'+':'-'}${fmt(t.amount)}
-        </div>
+        <div class="t-amount" style="color:${isIncome?'#00B894':'#FF6B6B'}">${isIncome?'+':'-'}${fmt(t.amount)}</div>
       </div>`;
     }).join('');
 
-    // Long press to delete on mobile
     setTimeout(() => {
       document.querySelectorAll('.transaction-item').forEach((el, i) => {
         let timer;
-        el.addEventListener('touchstart', () => {
-          timer = setTimeout(() => {
-            const id = txs[i]?.id;
-            if (id) deleteT(id);
-          }, 600);
-        });
+        el.addEventListener('touchstart', () => { timer = setTimeout(() => { if (txs[i]) deleteT(txs[i].id); }, 600); });
         el.addEventListener('touchend', () => clearTimeout(timer));
         el.addEventListener('touchmove', () => clearTimeout(timer));
       });
@@ -555,46 +685,32 @@
   }
 
   function deleteT(id) {
-    if (confirm('이 거래를 삭제할까요?')) {
-      DB.deleteTransaction(id);
-      renderAll();
-    }
+    if (confirm('이 거래를 삭제할까요?')) { DB.deleteTransaction(id); renderAll(); }
   }
 
   function renderBudget(txs) {
     const budgets = DB.getBudgets();
     const spent = {};
-    txs.filter(t => t.type === 'expense').forEach(t => {
-      spent[t.category] = (spent[t.category] || 0) + t.amount;
-    });
+    txs.filter(t => t.type === 'expense').forEach(t => { spent[t.category] = (spent[t.category] || 0) + t.amount; });
 
     const totalBudget = Object.values(budgets).reduce((s,v) => s+(v||0), 0);
     const totalSpent = Object.values(spent).reduce((s,v) => s+v, 0);
     const remaining = totalBudget - totalSpent;
     const pct = totalBudget > 0 ? Math.min(Math.round((totalSpent/totalBudget)*100), 100) : 0;
 
-    const totalCard = document.getElementById('budgetTotalCard');
-    totalCard.innerHTML = totalBudget > 0 ? `<div class="total-budget-card">
+    document.getElementById('budgetTotalCard').innerHTML = totalBudget > 0 ? `<div class="total-budget-card">
       <div class="tb-title">${currentMonth}월 전체 예산</div>
       <div class="tb-amount">${fmt(totalBudget)}</div>
       <div class="tb-row">
-        <div class="tb-item">
-          <div class="tb-item-label">사용</div>
-          <div class="tb-item-value" style="color:#FFB3B3">${fmt(totalSpent)}</div>
-        </div>
-        <div class="tb-item">
-          <div class="tb-item-label">남은 예산</div>
-          <div class="tb-item-value" style="color:${remaining>=0?'#A8F0E0':'#FFB3B3'}">${fmt(Math.abs(remaining))}</div>
-        </div>
+        <div class="tb-item"><div class="tb-item-label">사용</div><div class="tb-item-value" style="color:#FFB3B3">${fmt(totalSpent)}</div></div>
+        <div class="tb-item"><div class="tb-item-label">남은 예산</div><div class="tb-item-value" style="color:${remaining>=0?'#A8F0E0':'#FFB3B3'}">${fmt(Math.abs(remaining))}</div></div>
       </div>
       <div class="progress-bg"><div class="progress-bar" style="width:${pct}%;background:#fff"></div></div>
       <div class="progress-text">${pct}% 사용</div>
     </div>` : '';
 
-    const withBudget = EXPENSE_CATS.filter(c => budgets[c.id]);
-    const withoutBudget = EXPENSE_CATS.filter(c => !budgets[c.id]);
-
-    document.getElementById('budgetList').innerHTML = [...withBudget, ...withoutBudget].map(cat => {
+    const all = [...EXPENSE_CATS.filter(c => budgets[c.id]), ...EXPENSE_CATS.filter(c => !budgets[c.id])];
+    document.getElementById('budgetList').innerHTML = all.map(cat => {
       const budget = budgets[cat.id] || 0;
       const s = spent[cat.id] || 0;
       const rem = budget - s;
@@ -602,24 +718,15 @@
       const bpct = budget > 0 ? Math.min((s/budget)*100, 100) : 0;
       return `<div class="budget-card">
         <div class="budget-header">
-          <div class="budget-left">
-            <div class="b-icon" style="background:${cat.color}22">${cat.icon}</div>
-            <div class="b-name">${cat.name}</div>
-          </div>
-          ${budget > 0
-            ? `<div class="b-amount-tag">${fmt(budget)}</div>`
-            : `<div class="b-not-set">미설정</div>`}
+          <div class="budget-left"><div class="b-icon" style="background:${cat.color}22">${cat.icon}</div><div class="b-name">${cat.name}</div></div>
+          ${budget > 0 ? `<div class="b-amount-tag">${fmt(budget)}</div>` : `<div class="b-not-set">미설정</div>`}
         </div>
         ${budget > 0 ? `
           <div class="spent-row">
             <div class="spent-label">사용: <strong style="color:#FF6B6B">${fmt(s)}</strong></div>
-            <div class="remain-label" style="color:${isOver?'#FF6B6B':'#00B894'}">
-              ${isOver ? '초과: '+fmt(s-budget) : '남음: '+fmt(rem)}
-            </div>
+            <div class="remain-label" style="color:${isOver?'#FF6B6B':'#00B894'}">${isOver?'초과: '+fmt(s-budget):'남음: '+fmt(rem)}</div>
           </div>
-          <div class="b-progress-bg">
-            <div class="b-progress-bar" style="width:${bpct}%;background:${isOver?'#FF6B6B':cat.color}"></div>
-          </div>
+          <div class="b-progress-bg"><div class="b-progress-bar" style="width:${bpct}%;background:${isOver?'#FF6B6B':cat.color}"></div></div>
           ${isOver ? '<div class="over-budget-text">⚠️ 예산 초과!</div>' : ''}
         ` : ''}
       </div>`;
@@ -632,53 +739,47 @@
     document.getElementById('statsIncome').textContent = fmt(income);
     document.getElementById('statsExpense').textContent = fmt(expense);
 
-    // Bar chart
+    // Bar chart - group by date day-of-month
     const daily = {};
     txs.filter(t => t.type === statsTab).forEach(t => {
       const day = new Date(t.date).getDate();
       daily[day] = (daily[day] || 0) + t.amount;
     });
-    const maxVal = Math.max(...Object.values(daily), 1);
-    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+    const { salaryDay } = DB.getSettings();
+    const { start, end } = getPeriodRange(currentYear, currentMonth, salaryDay);
+    // Build list of days in period
+    const days = [];
+    let cur = new Date(start);
+    const endD = new Date(end);
+    while (cur <= endD) { days.push(new Date(cur)); cur.setDate(cur.getDate() + 1); }
+    const maxVal = Math.max(...days.map(d => daily[d.getDate()] || 0), 1);
     const barChart = document.getElementById('barChart');
     barChart.innerHTML = '';
-    for (let d = 1; d <= daysInMonth; d++) {
-      const amt = daily[d] || 0;
+    days.forEach(d => {
+      const day = d.getDate();
+      const amt = daily[day] || 0;
       const h = amt > 0 ? Math.max((amt/maxVal)*80, 6) : 2;
       const col = document.createElement('div');
       col.className = 'bar-col';
-      col.innerHTML = `<div class="bar-wrap"><div class="bar-visual" style="height:${h}px;background:${amt>0?(statsTab==='expense'?'#FF6B6B':'#00B894'):'#E9ECEF'}"></div></div><div class="bar-day">${d}</div>`;
+      col.innerHTML = `<div class="bar-wrap"><div class="bar-visual" style="height:${h}px;background:${amt>0?(statsTab==='expense'?'#FF6B6B':'#00B894'):'#E9ECEF'}"></div></div><div class="bar-day">${day}</div>`;
       barChart.appendChild(col);
-    }
-
-    // Category breakdown
-    const catTotals = {};
-    txs.filter(t => t.type === 'expense').forEach(t => {
-      catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
     });
+
+    const catTotals = {};
+    txs.filter(t => t.type === 'expense').forEach(t => { catTotals[t.category] = (catTotals[t.category] || 0) + t.amount; });
     const sorted = Object.entries(catTotals).sort((a,b) => b[1]-a[1]);
     const maxAmt = sorted.length > 0 ? sorted[0][1] : 1;
     const catList = document.getElementById('catStatList');
-    if (sorted.length === 0) {
-      catList.innerHTML = '<div style="text-align:center;color:#ADB5BD;font-size:14px;padding:20px 0">이번 달 지출 내역이 없습니다</div>';
-      return;
-    }
+    if (sorted.length === 0) { catList.innerHTML = '<div style="text-align:center;color:#ADB5BD;font-size:14px;padding:20px 0">이번 기간 지출 내역이 없습니다</div>'; return; }
     catList.innerHTML = sorted.map(([catId, amt]) => {
       const cat = getCat(catId);
       const pct = expense > 0 ? Math.round((amt/expense)*100) : 0;
-      const barW = Math.round((amt/maxAmt)*100);
       return `<div class="cat-stat-row">
         <div class="cat-stat-header">
-          <div class="cat-stat-left">
-            <span style="font-size:18px">${cat.icon}</span>
-            <span class="cat-stat-name">${cat.name}</span>
-          </div>
-          <div class="cat-stat-right">
-            <div class="cat-stat-amount">${fmt(amt)}</div>
-            <div class="cat-stat-pct">${pct}%</div>
-          </div>
+          <div class="cat-stat-left"><span style="font-size:18px">${cat.icon}</span><span class="cat-stat-name">${cat.name}</span></div>
+          <div class="cat-stat-right"><div class="cat-stat-amount">${fmt(amt)}</div><div class="cat-stat-pct">${pct}%</div></div>
         </div>
-        <div class="s-progress-bg"><div class="s-progress-bar" style="width:${barW}%;background:${cat.color}"></div></div>
+        <div class="s-progress-bg"><div class="s-progress-bar" style="width:${Math.round((amt/maxAmt)*100)}%;background:${cat.color}"></div></div>
       </div>`;
     }).join('');
   }
@@ -687,7 +788,170 @@
     statsTab = tab;
     document.getElementById('tabExpense').className = 's-tab' + (tab === 'expense' ? ' active-expense' : '');
     document.getElementById('tabIncome').className = 's-tab' + (tab === 'income' ? ' active-income' : '');
-    renderStats(getMonthTransactions());
+    renderStats(getPeriodTransactions());
+  }
+
+  // ===== SETTINGS =====
+  function renderSettings() {
+    const { salaryDay } = DB.getSettings();
+    document.getElementById('salaryDaySelect').value = salaryDay;
+
+    // Period preview
+    const now = new Date();
+    const y = now.getFullYear(), m = now.getMonth() + 1;
+    const { start, end } = getPeriodRange(y, m, salaryDay);
+    const fmt2 = d => `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}`;
+    document.getElementById('periodPreview').innerHTML = `
+      <div class="period-preview">
+        <div class="period-preview-title">📅 현재 기간 설정</div>
+        <div class="period-preview-dates">${fmt2(start)} ~ ${fmt2(end)}</div>
+        <div class="period-preview-sub">
+          ${salaryDay <= 1 ? '매월 1일 ~ 말일 기준 (일반 월별)' : `매월 ${salaryDay}일 급여일 기준`}
+        </div>
+      </div>`;
+  }
+
+  function saveSalaryDay(val) {
+    const settings = DB.getSettings();
+    settings.salaryDay = parseInt(val);
+    DB.saveSettings(settings);
+    renderSettings();
+    renderAll();
+  }
+
+  // ===== DATA EXPORT =====
+  function exportData() {
+    const data = { transactions: DB.getTransactions(), budgets: DB.getBudgets(), settings: DB.getSettings(), exportedAt: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'moneybook_backup.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function clearAllData() {
+    if (confirm('모든 거래, 예산 데이터를 삭제할까요?\n이 작업은 되돌릴 수 없습니다.')) {
+      localStorage.removeItem('mb_transactions');
+      localStorage.removeItem('mb_budgets');
+      renderAll();
+      alert('데이터가 초기화되었습니다.');
+    }
+  }
+
+  // ===== SMS PARSER =====
+  function parseSMS(text) {
+    const t = text.trim();
+
+    // 1. Extract amount
+    const amountMatch = t.match(/(\d{1,3}(?:,\d{3})*|\d+)\s*원/);
+    if (!amountMatch) return null;
+    const amount = parseInt(amountMatch[1].replace(/,/g, ''));
+    if (!amount || amount <= 0) return null;
+
+    // 2. Determine type
+    const isExpense = /승인|결제|사용|출금/.test(t);
+    const isIncome = /입금|급여|이체|적립/.test(t);
+    const type = isIncome && !isExpense ? 'income' : 'expense';
+
+    // 3. Extract date
+    const now = new Date();
+    let date = now.toISOString().split('T')[0];
+    const dateMatch = t.match(/(\d{1,2})[\/\.](\d{1,2})/);
+    if (dateMatch) {
+      const mo = parseInt(dateMatch[1]), da = parseInt(dateMatch[2]);
+      if (mo >= 1 && mo <= 12 && da >= 1 && da <= 31) {
+        date = `${now.getFullYear()}-${pad(mo)}-${pad(da)}`;
+      }
+    }
+
+    // 4. Extract merchant / memo
+    let memo = '';
+    const merchantPatterns = [
+      /님\s+(?:\d{1,2}\/\d{1,2}\s+)?(.+?)\s+[\d,]+원/,   // 홍길동님 3/10 스타벅스 6,500원
+      /승인\s+[\d,]+원\s+(.+?)\s+\d{2}\/\d{2}/,            // 승인 6,500원 스타벅스 03/10
+      /승인\s+(.+?)\s+[\d,]+원/,                             // 승인 스타벅스 6,500원
+      /결제\s+(.+?)\s+[\d,]+원/,                             // 결제 스타벅스 6,500원
+      /출금\s+[\d,]+원\s+(.+)/,                              // 출금 6,500원 스타벅스
+      /원\s+(.+?)\s+(?:승인|결제|입금|출금)/,                // 6,500원 스타벅스 승인
+    ];
+    for (const p of merchantPatterns) {
+      const m = t.match(p);
+      if (m) {
+        memo = m[1].trim()
+          .replace(/\d{1,2}\/\d{1,2}/, '')  // remove date fragments
+          .replace(/\s+/g, ' ').trim();
+        if (memo.length > 1) break;
+      }
+    }
+    // Fallback: find Korean/English words not in common bank terms
+    if (!memo) {
+      const bankTerms = ['승인','결제','출금','입금','사용','잔액','이체','카드','은행','급여','농협','국민','신한','하나','우리','삼성','현대','롯데','토스','카카오'];
+      const words = t.match(/[가-힣a-zA-Z0-9]+/g) || [];
+      for (const w of words) {
+        if (w.length > 1 && !bankTerms.some(b => w.includes(b)) && isNaN(w)) {
+          memo = w; break;
+        }
+      }
+    }
+
+    // 5. Guess category
+    let category = type === 'income' ? 'other_income' : 'other_expense';
+    if (type === 'income') {
+      if (/급여|월급/.test(t)) category = 'salary';
+    } else {
+      if (/편의점|GS25|CU|세븐|마트|이마트|홈플|쿠팡|배민|쿠팡이츠|요기요|식당|카페|스타벅스|맥도날드|버거킹|치킨|피자|족발|삼겹|김밥|분식/.test(t)) category = 'food';
+      else if (/지하철|버스|택시|카카오T|우버|주유|주차|교통|KTX|기차/.test(t)) category = 'transport';
+      else if ("/쇼핑|무신사|지그재그|올리브영|다이소|코스트코|이케아|Amazon|아마존".test(t)) category = 'shopping';
+      else if (/병원|약국|의원|치과|한의원|의료/.test(t)) category = 'health';
+      else if (/통신|SKT|KT|LG유플|알뜰폰/.test(t)) category = 'communication';
+      else if (/학원|교육|책|도서|강의/.test(t)) category = 'education';
+      else if (/월세|관리비|전기|수도|가스|아파트|임대/.test(t)) category = 'housing';
+      else if (/미용실|헬스|피트니스|네이버페이|쿠페이/.test(t)) category = 'beauty';
+    }
+
+    return { amount, type, date, memo, category };
+  }
+
+  let parsedSMSTx = null;
+
+  function openSMSModal() {
+    document.getElementById('smsInput').value = '';
+    document.getElementById('smsParseResult').innerHTML = '';
+    document.getElementById('smsConfirmBtn').style.display = 'none';
+    parsedSMSTx = null;
+    document.getElementById('smsModal').classList.add('open');
+  }
+
+  function processSMS() {
+    const text = document.getElementById('smsInput').value.trim();
+    if (!text) { alert('문자 내용을 붙여넣어주세요'); return; }
+    const result = parseSMS(text);
+    const resultEl = document.getElementById('smsParseResult');
+    if (!result) {
+      resultEl.innerHTML = `<div class="parse-error">❌ 인식 실패 — 금액(원)이 포함된 카드/은행 문자를 붙여넣어주세요</div>`;
+      document.getElementById('smsConfirmBtn').style.display = 'none';
+      parsedSMSTx = null;
+      return;
+    }
+    parsedSMSTx = result;
+    const cat = getCat(result.category);
+    resultEl.innerHTML = `<div class="sms-result">
+      <div class="sms-result-title">✅ 인식 결과</div>
+      <div class="sms-result-row"><span class="sms-result-label">유형</span><span class="sms-result-value" style="color:${result.type==='income'?'#00B894':'#FF6B6B'}">${result.type==='income'?'수입':'지출'}</span></div>
+      <div class="sms-result-row"><span class="sms-result-label">금액</span><span class="sms-result-value">${fmt(result.amount)}</span></div>
+      <div class="sms-result-row"><span class="sms-result-label">날짜</span><span class="sms-result-value">${result.date}</span></div>
+      <div class="sms-result-row"><span class="sms-result-label">카테고리</span><span class="sms-result-value">${cat.icon} ${cat.name}</span></div>
+      ${result.memo ? `<div class="sms-result-row"><span class="sms-result-label">메모</span><span class="sms-result-value">${result.memo}</span></div>` : ''}
+    </div>`;
+    document.getElementById('smsConfirmBtn').style.display = 'block';
+  }
+
+  function confirmSMS() {
+    if (!parsedSMSTx) return;
+    DB.addTransaction({ id: uid(), ...parsedSMSTx, auto: true });
+    document.getElementById('smsModal').classList.remove('open');
+    renderAll();
+    parsedSMSTx = null;
   }
 
   // ===== TRANSACTION MODAL =====
@@ -713,17 +977,11 @@
     const cats = currentType === 'expense' ? EXPENSE_CATS : INCOME_CATS;
     document.getElementById('catGrid').innerHTML = cats.map(cat => {
       const sel = selectedCatId === cat.id;
-      return `<div class="cat-grid-item ${sel ? 'sel-'+currentType : ''}" onclick="selectCat('${cat.id}')">
-        <div class="cat-icon-sm">${cat.icon}</div>
-        <div class="cat-name-sm">${cat.name}</div>
-      </div>`;
+      return `<div class="cat-grid-item ${sel?'sel-'+currentType:''}" onclick="selectCat('${cat.id}')"><div class="cat-icon-sm">${cat.icon}</div><div class="cat-name-sm">${cat.name}</div></div>`;
     }).join('');
   }
 
-  function selectCat(id) {
-    selectedCatId = id;
-    renderCatGrid();
-  }
+  function selectCat(id) { selectedCatId = id; renderCatGrid(); }
 
   function saveTransaction() {
     const amount = Number(document.getElementById('inputAmount').value);
@@ -758,9 +1016,8 @@
     document.querySelectorAll('.budget-cat-item').forEach(el => el.classList.remove('selected'));
     const el = document.getElementById('bcat_' + id);
     if (el) el.classList.add('selected');
-    const budgets = DB.getBudgets();
-    if (budgets[id]) document.getElementById('inputBudgetAmount').value = budgets[id];
-    else document.getElementById('inputBudgetAmount').value = '';
+    const b = DB.getBudgets();
+    document.getElementById('inputBudgetAmount').value = b[id] ? b[id] : '';
   }
 
   function saveBudget() {
@@ -773,14 +1030,13 @@
   }
 
   function closeModalOnOverlay(e, id) {
-    if (e.target === document.getElementById(id)) {
-      document.getElementById(id).classList.remove('open');
-    }
+    if (e.target === document.getElementById(id)) document.getElementById(id).classList.remove('open');
   }
 
   // ===== INIT =====
   renderAll();
   renderCatGrid();
+  renderSettings();
   </script>
 </body>
 </html>
