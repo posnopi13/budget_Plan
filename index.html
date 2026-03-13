@@ -327,6 +327,7 @@ body{background:#1a1a2e;display:flex;justify-content:center;align-items:center;m
           <button class="flow-period-tab active" id="fpt-month" onclick="setFlowPeriod('month')">이번달</button>
           <button class="flow-period-tab" id="fpt-quarter" onclick="setFlowPeriod('quarter')">3개월</button>
           <button class="flow-period-tab" id="fpt-year" onclick="setFlowPeriod('year')">올해</button>
+          <button class="flow-period-tab" id="fpt-all" onclick="setFlowPeriod('all')">전체</button>
         </div>
         <div class="sankey-card">
           <div class="sankey-title">💰 자금 흐름</div>
@@ -603,7 +604,7 @@ function switchTab(tab){
   if(tab==='budget')renderBudget();
   if(tab==='stats')renderStats();
   if(tab==='settings')renderSettings();
-  if(tab==='flow')renderFlow();
+  if(tab==='flow')requestAnimationFrame(renderFlow);
 }
 
 // ======== Home ========
@@ -1052,7 +1053,7 @@ var fcGoal=0;
 
 function setFlowPeriod(p){
   flowPeriod=p;
-  ['month','quarter','year'].forEach(function(k){
+  ['month','quarter','year','all'].forEach(function(k){
     var el=document.getElementById('fpt-'+k);
     if(el)el.className='flow-period-tab'+(k===p?' active':'');
   });
@@ -1069,6 +1070,7 @@ function renderFlow(){
 function getFlowPeriodTxs(){
   var now=new Date();
   var allTxs=DB.getTransactions();
+  if(flowPeriod==='all') return allTxs;
   if(flowPeriod==='month'){
     var ym=now.getFullYear()*12+now.getMonth();
     return allTxs.filter(function(t){var d=new Date(t.date);return d.getFullYear()*12+d.getMonth()===ym;});
@@ -1087,18 +1089,24 @@ function buildSankeyData(txs){
     else{expBy[t.category]=(expBy[t.category]||0)+t.amount;totExp+=t.amount;}
   });
   var saving=Math.max(0,totInc-totExp);
-  var effExp=Math.min(totExp,totInc);
   var nodes=[],links=[],nOf={};
 
-  // Layer 0: income sources
-  Object.keys(incBy).forEach(function(cid){
-    if(incBy[cid]<=0)return;
-    nOf['i_'+cid]=nodes.length;
-    nodes.push({label:getCat(cid).name,type:'income',amount:incBy[cid],layer:0});
-  });
+  // Layer 0: income sources (수입이 없으면 더미 "지출합계" 노드 생성)
+  if(totInc>0){
+    Object.keys(incBy).forEach(function(cid){
+      if(incBy[cid]<=0)return;
+      nOf['i_'+cid]=nodes.length;
+      nodes.push({label:getCat(cid).name,type:'income',amount:incBy[cid],layer:0});
+    });
+  } else if(totExp>0){
+    nOf['dummy']=nodes.length;
+    nodes.push({label:'지출합계',type:'income',amount:totExp,layer:0});
+  }
+
   // Layer 1: distribution
-  if(effExp>0){nOf['m_exp']=nodes.length;nodes.push({label:'지출',type:'mid_expense',amount:effExp,layer:1});}
+  if(totExp>0){nOf['m_exp']=nodes.length;nodes.push({label:'지출',type:'mid_expense',amount:totExp,layer:1});}
   if(saving>0){nOf['m_sav']=nodes.length;nodes.push({label:'저축',type:'mid_saving',amount:saving,layer:1});}
+
   // Layer 2: sinks
   Object.keys(expBy).forEach(function(cid){
     if(expBy[cid]<=0)return;
@@ -1107,24 +1115,26 @@ function buildSankeyData(txs){
   });
   if(saving>0){nOf['s_sav']=nodes.length;nodes.push({label:'저축금',type:'saving',amount:saving,layer:2});}
 
-  // Links: income → mid (proportional split)
+  // Links: income sources → mid nodes
   if(totInc>0){
     Object.keys(incBy).forEach(function(cid){
       var inc=incBy[cid];if(inc<=0)return;
       var si=nOf['i_'+cid];
-      if(effExp>0&&nOf['m_exp']!==undefined)
-        links.push({source:si,target:nOf['m_exp'],value:inc*effExp/totInc});
+      if(totExp>0&&nOf['m_exp']!==undefined)
+        links.push({source:si,target:nOf['m_exp'],value:inc*Math.min(totExp,totInc)/totInc});
       if(saving>0&&nOf['m_sav']!==undefined)
         links.push({source:si,target:nOf['m_sav'],value:inc*saving/totInc});
     });
+  } else if(nOf['dummy']!==undefined&&nOf['m_exp']!==undefined){
+    links.push({source:nOf['dummy'],target:nOf['m_exp'],value:totExp});
   }
+
   // Links: mid_exp → expense categories
   if(nOf['m_exp']!==undefined){
-    var expScale=effExp/(totExp||1);
     Object.keys(expBy).forEach(function(cid){
       var ti=nOf['e_'+cid];
       if(ti===undefined||expBy[cid]<=0)return;
-      links.push({source:nOf['m_exp'],target:ti,value:expBy[cid]*expScale});
+      links.push({source:nOf['m_exp'],target:ti,value:expBy[cid]});
     });
   }
   // Links: mid_sav → sink_sav
