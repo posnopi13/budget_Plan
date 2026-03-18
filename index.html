@@ -197,6 +197,47 @@ body{background:#1a1a2e;display:flex;justify-content:center;align-items:center;m
 .forecast-dday{text-align:center;padding:10px;background:linear-gradient(135deg,#6C5CE7,#a29bfe);border-radius:12px;color:#fff;font-size:13px;font-weight:700;margin-top:12px;display:none;}
 .forecast-dday.show{display:block;}
 .forecast-meta{font-size:11px;color:#ADB5BD;text-align:center;margin-top:8px;}
+/* Investment type button */
+.type-btn.active.invest{border-color:#6C5CE7;background:#F3F0FF;color:#6C5CE7;}
+/* Recurring section */
+.recurring-section{background:#F8F9FA;border-radius:10px;padding:10px 12px;margin-bottom:12px;}
+.recurring-check-row{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.recurring-check-row input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#6C5CE7;}
+.recurring-check-row span{font-size:13px;font-weight:600;color:#495057;}
+.recurring-day-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:#495057;}
+.recurring-day-row input[type=number]{width:60px;padding:6px 8px;border:1.5px solid #DEE2E6;border-radius:8px;font-size:15px;font-weight:700;text-align:center;color:#343A40;outline:none;}
+.recurring-day-row input[type=number]:focus{border-color:#6C5CE7;}
+/* Investment form */
+.invest-date-row{display:flex;gap:8px;}
+.invest-date-row .form-group{flex:1;}
+.invest-date-row .form-input{font-size:13px;padding:10px;}
+/* Investment section on home */
+.inv-section{padding:0 16px 8px;}
+.inv-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.inv-add-btn{width:28px;height:28px;background:#6C5CE7;border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
+.inv-list{display:flex;flex-direction:column;gap:8px;}
+.inv-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.inv-card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.inv-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.inv-name{font-size:14px;font-weight:600;color:#343A40;}
+.inv-meta{font-size:11px;color:#868E96;margin-top:2px;}
+.inv-amounts{display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid #F1F3F5;font-size:12px;color:#868E96;flex-wrap:wrap;gap:4px;}
+.inv-amounts strong{color:#00B894;font-weight:700;}
+.inv-del-btn{background:none;border:none;color:#DEE2E6;font-size:16px;cursor:pointer;padding:0;line-height:1;margin-left:auto;}
+/* Flow month nav */
+.flow-month-nav{display:flex;align-items:center;justify-content:space-between;padding:4px 0;margin-bottom:10px;}
+.flow-month-nav button{background:#F1F3F5;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;color:#343A40;display:flex;align-items:center;justify-content:center;}
+.flow-month-label{font-size:16px;font-weight:700;color:#343A40;}
+.flow-custom-range{background:#F8F9FA;border-radius:12px;padding:10px 12px;margin-bottom:14px;}
+.flow-custom-range-title{font-size:11px;font-weight:700;color:#868E96;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.flow-custom-inputs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.flow-month-input{padding:7px 10px;border:1.5px solid #DEE2E6;border-radius:8px;font-size:12px;color:#343A40;outline:none;background:#fff;flex:1;min-width:110px;}
+.flow-month-input:focus{border-color:#6C5CE7;}
+.flow-range-sep{font-size:12px;color:#868E96;}
+.flow-range-btns{display:flex;gap:6px;margin-top:6px;}
+.flow-range-apply{flex:1;padding:7px 0;background:#6C5CE7;border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;}
+.flow-range-clear{flex:1;padding:7px 0;background:#E9ECEF;border:none;border-radius:8px;color:#495057;font-size:12px;font-weight:600;cursor:pointer;}
+.sankey-legend .sl-item.inv{color:#6C5CE7;}
 /* Sankey Tooltip */
 .sk-tooltip{position:fixed;background:rgba(30,30,46,0.95);color:#fff;padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.6;pointer-events:none;z-index:400;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.35);max-width:160px;}
 </style>
@@ -251,6 +292,13 @@ body{background:#1a1a2e;display:flex;justify-content:center;align-items:center;m
       <div id="home-body">
         <div class="section-title">거래 내역</div>
         <div class="tx-list" id="tx-list"></div>
+      </div>
+      <div class="inv-section">
+        <div class="inv-section-header">
+          <div class="section-title" style="margin-bottom:0">투자 계좌</div>
+          <button class="inv-add-btn" onclick="openTxModal('invest')">+</button>
+        </div>
+        <div class="inv-list" id="inv-list"></div>
       </div>
       <button id="fab" onclick="openTxModal()">+</button>
     </div>
@@ -323,11 +371,22 @@ body{background:#1a1a2e;display:flex;justify-content:center;align-items:center;m
     <!-- Flow Tab -->
     <div id="flow-tab" class="tab-content">
       <div id="flow-screen">
-        <div class="flow-period-tabs">
-          <button class="flow-period-tab active" id="fpt-month" onclick="setFlowPeriod('month')">이번달</button>
-          <button class="flow-period-tab" id="fpt-quarter" onclick="setFlowPeriod('quarter')">3개월</button>
-          <button class="flow-period-tab" id="fpt-year" onclick="setFlowPeriod('year')">올해</button>
-          <button class="flow-period-tab" id="fpt-all" onclick="setFlowPeriod('all')">전체</button>
+        <div class="flow-month-nav">
+          <button onclick="changeFlowMonth(-1)">&#8249;</button>
+          <span class="flow-month-label" id="flow-month-label">로딩중...</span>
+          <button onclick="changeFlowMonth(1)">&#8250;</button>
+        </div>
+        <div class="flow-custom-range">
+          <div class="flow-custom-range-title">기간 직접 설정</div>
+          <div class="flow-custom-inputs">
+            <input type="month" class="flow-month-input" id="flow-start-month" placeholder="시작월">
+            <span class="flow-range-sep">~</span>
+            <input type="month" class="flow-month-input" id="flow-end-month" placeholder="종료월">
+          </div>
+          <div class="flow-range-btns">
+            <button class="flow-range-apply" onclick="applyFlowRange()">적용</button>
+            <button class="flow-range-clear" onclick="clearFlowRange()">초기화</button>
+          </div>
         </div>
         <div class="sankey-card">
           <div class="sankey-title">💰 자금 흐름</div>
@@ -337,6 +396,7 @@ body{background:#1a1a2e;display:flex;justify-content:center;align-items:center;m
             <div class="sl-item"><div class="sl-dot" style="background:#4A9FE8"></div>수입</div>
             <div class="sl-item"><div class="sl-dot" style="background:#FF6B6B"></div>지출</div>
             <div class="sl-item"><div class="sl-dot" style="background:#00B894"></div>저축</div>
+            <div class="sl-item inv"><div class="sl-dot" style="background:#6C5CE7"></div>투자</div>
           </div>
         </div>
         <div class="forecast-card">
@@ -398,29 +458,87 @@ body{background:#1a1a2e;display:flex;justify-content:center;align-items:center;m
 <div class="modal-backdrop" id="tx-modal-backdrop" onclick="handleTxBackdropClick(event)">
   <div class="modal" id="tx-modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">거래 추가</div>
+    <div class="modal-title">항목 추가</div>
     <div class="type-toggle">
       <button class="type-btn expense active" id="type-expense" onclick="setTxType('expense')">지출</button>
       <button class="type-btn income" id="type-income" onclick="setTxType('income')">수입</button>
+      <button class="type-btn invest" id="type-invest" onclick="setTxType('invest')">투자</button>
     </div>
-    <div class="form-group">
-      <label class="form-label">금액</label>
-      <div class="amount-row">
-        <input type="text" inputmode="numeric" class="form-input" id="tx-amount" placeholder="0" oninput="formatAmountInput(this)">
-        <span class="amount-suffix">원</span>
+    <!-- 일반(지출/수입) 필드 -->
+    <div id="tx-normal-fields">
+      <div class="form-group">
+        <label class="form-label">금액</label>
+        <div class="amount-row">
+          <input type="text" inputmode="numeric" class="form-input" id="tx-amount" placeholder="0" oninput="formatAmountInput(this)">
+          <span class="amount-suffix">원</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">날짜</label>
+        <input type="date" class="form-input" id="tx-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">카테고리</label>
+        <div class="cat-grid" id="cat-grid"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">메모</label>
+        <input type="text" class="form-input" id="tx-memo" placeholder="메모 (선택)">
+      </div>
+      <div class="recurring-section">
+        <label class="recurring-check-row">
+          <input type="checkbox" id="tx-recurring-check" onchange="toggleRecurring()">
+          <span>정기 지출/수입 설정</span>
+        </label>
+        <div class="recurring-day-row" id="tx-recurring-day-row" style="display:none">
+          <span>매월</span>
+          <input type="number" id="tx-recurring-day" min="1" max="31" placeholder="15">
+          <span>일 자동 등록</span>
+        </div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">날짜</label>
-      <input type="date" class="form-input" id="tx-date">
-    </div>
-    <div class="form-group">
-      <label class="form-label">카테고리</label>
-      <div class="cat-grid" id="cat-grid"></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">메모</label>
-      <input type="text" class="form-input" id="tx-memo" placeholder="메모 (선택)">
+    <!-- 투자 필드 -->
+    <div id="tx-invest-fields" style="display:none">
+      <div class="form-group">
+        <label class="form-label">투자 이름</label>
+        <input type="text" class="form-input" id="inv-name" placeholder="예: 국민은행 정기예금">
+      </div>
+      <div class="form-group">
+        <label class="form-label">카테고리</label>
+        <div class="cat-grid" id="inv-cat-grid"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">월 납입금액</label>
+        <div class="amount-row">
+          <input type="text" inputmode="numeric" class="form-input" id="inv-amount" placeholder="0" oninput="formatAmountInput(this)">
+          <span class="amount-suffix">원</span>
+        </div>
+      </div>
+      <div class="invest-date-row">
+        <div class="form-group">
+          <label class="form-label">시작일</label>
+          <input type="date" class="form-input" id="inv-start">
+        </div>
+        <div class="form-group">
+          <label class="form-label">만기일 (선택)</label>
+          <input type="date" class="form-input" id="inv-maturity">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">예상 연 이율 (%)</label>
+        <input type="number" class="form-input" id="inv-rate" step="0.1" min="0" max="30" placeholder="3.5" style="font-size:15px;">
+      </div>
+      <div class="recurring-section">
+        <label class="recurring-check-row">
+          <input type="checkbox" id="inv-auto-check" onchange="toggleInvAuto()">
+          <span>자동이체 설정</span>
+        </label>
+        <div class="recurring-day-row" id="inv-auto-day-row" style="display:none">
+          <span>매월</span>
+          <input type="number" id="inv-auto-day" min="1" max="31" placeholder="15">
+          <span>일 자동이체</span>
+        </div>
+      </div>
     </div>
     <button class="btn-save" onclick="saveTx()">저장하기</button>
     <button class="btn-cancel" onclick="closeTxModal()">취소</button>
@@ -500,7 +618,13 @@ var DB = {
   saveBudgetEntry: function(id,amt){var b=this.getBudgets();b[id]=amt;localStorage.setItem('mb_budgets',JSON.stringify(b))},
   deleteBudgetEntry: function(id){var b=this.getBudgets();delete b[id];localStorage.setItem('mb_budgets',JSON.stringify(b))},
   getSettings: function(){try{return JSON.parse(localStorage.getItem('mb_settings')||'{"salaryDay":1,"totalBudget":0}')}catch(e){return{salaryDay:1,totalBudget:0}}},
-  saveSettings: function(s){localStorage.setItem('mb_settings',JSON.stringify(s))}
+  saveSettings: function(s){localStorage.setItem('mb_settings',JSON.stringify(s))},
+  getInvestments: function(){try{return JSON.parse(localStorage.getItem('mb_investments')||'[]')}catch(e){return[]}},
+  saveInvestments: function(arr){localStorage.setItem('mb_investments',JSON.stringify(arr))},
+  addInvestment: function(inv){var a=this.getInvestments();a.unshift(inv);this.saveInvestments(a);},
+  deleteInvestment: function(id){this.saveInvestments(this.getInvestments().filter(function(i){return i.id!==id}));},
+  getRecurringApplied: function(){try{return JSON.parse(localStorage.getItem('mb_rec_applied')||'{}')}catch(e){return{}}},
+  saveRecurringApplied: function(obj){localStorage.setItem('mb_rec_applied',JSON.stringify(obj));}
 };
 
 // ======== Categories ========
@@ -523,7 +647,16 @@ var INCOME_CATS=[
   {id:'gift',name:'용돈',icon:'🎁',color:'#E17055'},
   {id:'other_income',name:'기타수입',icon:'💵',color:'#B2BEC3'}
 ];
-var ALL_CATS=INCOME_CATS.concat(EXPENSE_CATS);
+var INVEST_CATS=[
+  {id:'deposit',name:'예금',icon:'🏦',color:'#4A9FE8'},
+  {id:'savings_acct',name:'적금',icon:'💳',color:'#00B894'},
+  {id:'stocks',name:'주식',icon:'📈',color:'#FDCB6E'},
+  {id:'fund',name:'펀드',icon:'💼',color:'#6C5CE7'},
+  {id:'etf',name:'ETF',icon:'📊',color:'#E17055'},
+  {id:'crypto',name:'코인',icon:'🪙',color:'#F39C12'},
+  {id:'other_inv',name:'기타투자',icon:'💰',color:'#B2BEC3'}
+];
+var ALL_CATS=INCOME_CATS.concat(EXPENSE_CATS).concat(INVEST_CATS);
 function getCat(id){return ALL_CATS.find(function(c){return c.id===id})||{name:'기타',icon:'💸',color:'#B2BEC3'}}
 
 // ======== Helpers ========
@@ -646,6 +779,39 @@ function renderHome(){
     el.addEventListener('mousedown',function(){timer=setTimeout(function(){confirmDeleteTx(el.dataset.id);},600);});
     el.addEventListener('mouseup',function(){clearTimeout(timer);});
   });
+  renderInvList();
+}
+
+function renderInvList(){
+  var invs=DB.getInvestments();
+  var invList=document.getElementById('inv-list');
+  if(!invList)return;
+  if(!invs.length){invList.innerHTML='<div class="empty-state" style="font-size:12px;padding:16px 0;color:#ADB5BD">투자 항목이 없습니다 · 위의 + 버튼으로 추가</div>';return;}
+  var now=new Date();
+  invList.innerHTML=invs.map(function(inv){
+    var cat=INVEST_CATS.find(function(c){return c.id===inv.category;})||{name:'기타',icon:'💰',color:'#6C5CE7'};
+    var start=new Date(inv.startDate);
+    var months=Math.max(0,(now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth()));
+    var contributed=months*inv.monthlyAmount;
+    var expected=calcFV(0,inv.monthlyAmount,inv.expectedRate,months);
+    var matStr=inv.maturityDate?'만기 '+inv.maturityDate:'만기 미설정';
+    var autoStr=inv.isAutoTransfer?' · 매월 '+inv.autoTransferDay+'일 자동이체':'';
+    return '<div class="inv-card">'
+      +'<div class="inv-card-top">'
+      +'<div class="inv-icon" style="background:'+cat.color+'20">'+cat.icon+'</div>'
+      +'<div style="flex:1;min-width:0">'
+      +'<div class="inv-name">'+escH(inv.name)+'</div>'
+      +'<div class="inv-meta">'+cat.name+' · 월 '+fmt(inv.monthlyAmount)+autoStr+'</div>'
+      +'</div>'
+      +'<button class="inv-del-btn" onclick="confirmDeleteInv(\''+inv.id+'\')">✕</button>'
+      +'</div>'
+      +'<div class="inv-amounts">'
+      +'<span>납입 <strong>'+fmtM(contributed)+'</strong></span>'
+      +'<span>예상 <strong>'+fmtM(expected)+'</strong></span>'
+      +'<span style="font-size:11px;color:#6C5CE7">'+matStr+'</span>'
+      +'</div>'
+      +'</div>';
+  }).join('');
 }
 
 function confirmDeleteTx(id){
@@ -658,15 +824,25 @@ function confirmDeleteTx(id){
 // ======== Transaction Modal ========
 var txType='expense';
 var txSelectedCat='other_expense';
+var invSelectedCat='deposit';
 
-function openTxModal(){
-  txType='expense';txSelectedCat='other_expense';
-  var amtEl=document.getElementById('tx-amount');
-  amtEl.value='';amtEl.dataset.raw='';
+function openTxModal(type){
+  txType=type||'expense';
+  txSelectedCat='other_expense';
+  invSelectedCat='deposit';
+  var amtEl=document.getElementById('tx-amount');amtEl.value='';amtEl.dataset.raw='';
   document.getElementById('tx-date').value=todayStr();
   document.getElementById('tx-memo').value='';
+  document.getElementById('tx-recurring-check').checked=false;
+  document.getElementById('tx-recurring-day-row').style.display='none';
+  document.getElementById('inv-name').value='';
+  var invAmt=document.getElementById('inv-amount');invAmt.value='';invAmt.dataset.raw='';
+  document.getElementById('inv-start').value=todayStr();
+  document.getElementById('inv-maturity').value='';
+  document.getElementById('inv-rate').value='3.5';
+  document.getElementById('inv-auto-check').checked=false;
+  document.getElementById('inv-auto-day-row').style.display='none';
   updateTxTypeUI();
-  renderCatGrid('cat-grid',EXPENSE_CATS,'tx');
   document.getElementById('tx-modal-backdrop').classList.add('open');
 }
 function closeTxModal(){document.getElementById('tx-modal-backdrop').classList.remove('open');}
@@ -674,21 +850,31 @@ function handleTxBackdropClick(e){if(e.target===document.getElementById('tx-moda
 
 function setTxType(type){
   txType=type;
-  txSelectedCat=type==='expense'?'other_expense':'other_income';
+  if(type==='expense')txSelectedCat='other_expense';
+  else if(type==='income')txSelectedCat='other_income';
+  else invSelectedCat='deposit';
   updateTxTypeUI();
-  renderCatGrid('cat-grid',type==='expense'?EXPENSE_CATS:INCOME_CATS,'tx');
+  var isInvest=type==='invest';
+  document.getElementById('tx-normal-fields').style.display=isInvest?'none':'block';
+  document.getElementById('tx-invest-fields').style.display=isInvest?'block':'none';
+  if(!isInvest)renderCatGrid('cat-grid',type==='expense'?EXPENSE_CATS:INCOME_CATS,'tx');
+  else renderCatGrid('inv-cat-grid',INVEST_CATS,'inv');
 }
 function updateTxTypeUI(){
-  var expBtn=document.getElementById('type-expense');
-  var incBtn=document.getElementById('type-income');
-  expBtn.className='type-btn expense'+(txType==='expense'?' active':'');
-  incBtn.className='type-btn income'+(txType==='income'?' active':'');
+  document.getElementById('type-expense').className='type-btn expense'+(txType==='expense'?' active':'');
+  document.getElementById('type-income').className='type-btn income'+(txType==='income'?' active':'');
+  document.getElementById('type-invest').className='type-btn invest'+(txType==='invest'?' active':'');
+  var isInvest=txType==='invest';
+  document.getElementById('tx-normal-fields').style.display=isInvest?'none':'block';
+  document.getElementById('tx-invest-fields').style.display=isInvest?'block':'none';
+  if(!isInvest)renderCatGrid('cat-grid',txType==='expense'?EXPENSE_CATS:INCOME_CATS,'tx');
+  else renderCatGrid('inv-cat-grid',INVEST_CATS,'inv');
 }
 
 function renderCatGrid(gridId,cats,prefix){
   var grid=document.getElementById(gridId);
-  var selectedCat=prefix==='tx'?txSelectedCat:prefix==='sms'?smsSelectedCat:budgetSelectedCat;
-  var fnName=prefix==='tx'?'selectTxCat':prefix==='sms'?'selectSmsCat':'selectBudgetCat';
+  var selectedCat=prefix==='tx'?txSelectedCat:prefix==='sms'?smsSelectedCat:prefix==='inv'?invSelectedCat:budgetSelectedCat;
+  var fnName=prefix==='tx'?'selectTxCat':prefix==='sms'?'selectSmsCat':prefix==='inv'?'selectInvCat':'selectBudgetCat';
   grid.innerHTML=cats.map(function(c){
     return '<div class="cat-option'+(selectedCat===c.id?' selected':'')+'" onclick="'+fnName+'(\''+c.id+'\')">'
       +'<div class="co-icon" style="background:'+c.color+'20;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">'+c.icon+'</div>'
@@ -698,15 +884,70 @@ function renderCatGrid(gridId,cats,prefix){
 }
 
 function selectTxCat(id){txSelectedCat=id;renderCatGrid('cat-grid',txType==='expense'?EXPENSE_CATS:INCOME_CATS,'tx');}
+function selectInvCat(id){invSelectedCat=id;renderCatGrid('inv-cat-grid',INVEST_CATS,'inv');}
+function toggleRecurring(){document.getElementById('tx-recurring-day-row').style.display=document.getElementById('tx-recurring-check').checked?'flex':'none';}
+function toggleInvAuto(){document.getElementById('inv-auto-day-row').style.display=document.getElementById('inv-auto-check').checked?'flex':'none';}
 
 function saveTx(){
+  if(txType==='invest'){saveInvestment();return;}
   var amount=getAmountVal(document.getElementById('tx-amount'));
   if(!amount){alert('금액을 입력해주세요');return;}
   var date=document.getElementById('tx-date').value||todayStr();
   var memo=document.getElementById('tx-memo').value.trim();
-  DB.addTransaction({id:Date.now().toString(),type:txType,amount:amount,date:date,category:txSelectedCat,memo:memo});
+  var isRec=document.getElementById('tx-recurring-check').checked;
+  var recDay=isRec?parseInt(document.getElementById('tx-recurring-day').value,10)||0:0;
+  if(isRec&&(recDay<1||recDay>31)){alert('정기 등록 일자를 1~31 사이로 입력해주세요');return;}
+  DB.addTransaction({id:Date.now().toString(),type:txType,amount:amount,date:date,category:txSelectedCat,memo:memo,isRecurring:isRec,recurringDay:recDay});
   closeTxModal();
   renderHome();
+}
+
+function saveInvestment(){
+  var name=document.getElementById('inv-name').value.trim();
+  if(!name){alert('투자 이름을 입력해주세요');return;}
+  var amount=getAmountVal(document.getElementById('inv-amount'));
+  if(!amount){alert('월 납입금액을 입력해주세요');return;}
+  var startDate=document.getElementById('inv-start').value||todayStr();
+  var maturityDate=document.getElementById('inv-maturity').value||'';
+  var rate=parseFloat(document.getElementById('inv-rate').value)||0;
+  var isAuto=document.getElementById('inv-auto-check').checked;
+  var autoDay=isAuto?parseInt(document.getElementById('inv-auto-day').value,10)||1:0;
+  if(isAuto&&(autoDay<1||autoDay>31)){alert('자동이체 일자를 1~31 사이로 입력해주세요');return;}
+  DB.addInvestment({id:'inv_'+Date.now(),name:name,category:invSelectedCat,monthlyAmount:amount,startDate:startDate,maturityDate:maturityDate,expectedRate:rate,isAutoTransfer:isAuto,autoTransferDay:autoDay,createdAt:todayStr()});
+  closeTxModal();
+  renderHome();
+}
+
+function confirmDeleteInv(id){
+  if(confirm('이 투자 항목을 삭제하시겠습니까?')){DB.deleteInvestment(id);renderHome();}
+}
+
+// 정기 지출/수입 및 투자 자동이체 자동 적용
+function applyDueRecurring(){
+  var today=new Date();
+  var todayDay=today.getDate();
+  var todayYM=today.getFullYear()+'-'+pad(today.getMonth()+1);
+  var applied=DB.getRecurringApplied();
+  // 정기 거래 처리
+  DB.getTransactions().filter(function(t){return t.isRecurring&&t.recurringDay&&t.recurringDay===todayDay;}).forEach(function(t){
+    var key='tx_'+t.id+'_'+todayYM;
+    if(!applied[key]){
+      DB.addTransaction({id:Date.now().toString()+'r',type:t.type,amount:t.amount,date:todayStr(),category:t.category,memo:(t.memo?t.memo+' ':'')+'(정기)',isRecurring:false,recurringDay:0});
+      applied[key]=true;
+    }
+  });
+  // 투자 자동이체 처리
+  DB.getInvestments().filter(function(inv){return inv.isAutoTransfer&&inv.autoTransferDay===todayDay;}).forEach(function(inv){
+    var key='inv_'+inv.id+'_'+todayYM;
+    if(!applied[key]){
+      var matOk=!inv.maturityDate||new Date(inv.maturityDate)>=today;
+      if(matOk){
+        DB.addTransaction({id:Date.now().toString()+'i',type:'expense',amount:inv.monthlyAmount,date:todayStr(),category:inv.category,memo:inv.name+' 자동이체',isRecurring:false,invId:inv.id});
+        applied[key]=true;
+      }
+    }
+  });
+  DB.saveRecurringApplied(applied);
 }
 
 // ======== Budget Modal ========
@@ -1047,20 +1288,51 @@ document.addEventListener('visibilitychange',function(){
 })();
 
 // ======== Flow Tab ========
-var flowPeriod='month';
+var flowYear=new Date().getFullYear();
+var flowMonth=new Date().getMonth()+1;
+var flowUseCustomRange=false;
 var fcAnnualRate=3.5;
 var fcGoal=0;
 
-function setFlowPeriod(p){
-  flowPeriod=p;
-  ['month','quarter','year','all'].forEach(function(k){
-    var el=document.getElementById('fpt-'+k);
-    if(el)el.className='flow-period-tab'+(k===p?' active':'');
-  });
+function updateFlowMonthUI(){
+  var el=document.getElementById('flow-month-label');
+  if(el)el.textContent=flowYear+'년 '+pad(flowMonth)+'월';
+}
+
+function changeFlowMonth(dir){
+  flowUseCustomRange=false;
+  var sm=document.getElementById('flow-start-month');
+  var em=document.getElementById('flow-end-month');
+  if(sm)sm.value='';if(em)em.value='';
+  flowMonth+=dir;
+  if(flowMonth>12){flowMonth=1;flowYear++;}
+  if(flowMonth<1){flowMonth=12;flowYear--;}
+  updateFlowMonthUI();
+  renderFlow();
+}
+
+function applyFlowRange(){
+  var s=document.getElementById('flow-start-month').value;
+  var e=document.getElementById('flow-end-month').value;
+  if(!s||!e){alert('시작월과 종료월을 모두 입력해주세요');return;}
+  if(s>e){alert('시작월이 종료월보다 클 수 없습니다');return;}
+  flowUseCustomRange=true;
+  var el=document.getElementById('flow-month-label');
+  if(el)el.textContent=s.replace('-','년 ')+'월 ~ '+e.replace('-','년 ')+'월';
+  renderFlow();
+}
+
+function clearFlowRange(){
+  var sm=document.getElementById('flow-start-month');
+  var em=document.getElementById('flow-end-month');
+  if(sm)sm.value='';if(em)em.value='';
+  flowUseCustomRange=false;
+  updateFlowMonthUI();
   renderFlow();
 }
 
 function renderFlow(){
+  updateFlowMonthUI();
   var txs=getFlowPeriodTxs();
   var sd=buildSankeyData(txs);
   drawSankey(sd);
@@ -1068,18 +1340,19 @@ function renderFlow(){
 }
 
 function getFlowPeriodTxs(){
-  var now=new Date();
   var allTxs=DB.getTransactions();
-  if(flowPeriod==='all') return allTxs;
-  if(flowPeriod==='month'){
-    var ym=now.getFullYear()*12+now.getMonth();
-    return allTxs.filter(function(t){var d=new Date(t.date);return d.getFullYear()*12+d.getMonth()===ym;});
+  if(flowUseCustomRange){
+    var s=document.getElementById('flow-start-month').value;
+    var e=document.getElementById('flow-end-month').value;
+    if(s&&e){
+      var start=new Date(s+'-01');
+      var ep=e.split('-');
+      var end=new Date(parseInt(ep[0],10),parseInt(ep[1],10),0);
+      return allTxs.filter(function(t){var d=new Date(t.date);return d>=start&&d<=end;});
+    }
   }
-  if(flowPeriod==='quarter'){
-    var from=new Date(now.getFullYear(),now.getMonth()-2,1);
-    return allTxs.filter(function(t){return new Date(t.date)>=from;});
-  }
-  return allTxs.filter(function(t){return new Date(t.date).getFullYear()===now.getFullYear();});
+  var ym=flowYear*12+(flowMonth-1);
+  return allTxs.filter(function(t){var d=new Date(t.date);return d.getFullYear()*12+d.getMonth()===ym;});
 }
 
 function buildSankeyData(txs){
@@ -1258,6 +1531,15 @@ function getSavingsBase(){
     var s=last3.reduce(function(acc,k){return acc+Math.max(0,mData[k].inc-mData[k].exp);},0);
     PMT=s/last3.length;
   }
+  // 투자 계좌 납입 누계를 PV에, 활성 월 납입액을 PMT에 추가
+  var now=new Date();
+  DB.getInvestments().forEach(function(inv){
+    var start=new Date(inv.startDate);
+    var mos=Math.max(0,(now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth()));
+    PV+=calcFV(0,inv.monthlyAmount,inv.expectedRate,mos); // 이자 포함 평가액
+    var matOk=!inv.maturityDate||new Date(inv.maturityDate)>now;
+    if(matOk)PMT+=inv.monthlyAmount;
+  });
   return{PV:PV,PMT:PMT};
 }
 
@@ -1353,6 +1635,8 @@ function onGoalChange(){
 }
 
 // ======== Init ========
+applyDueRecurring();
+updateFlowMonthUI();
 renderHome();
 renderSettings();
 </script>
