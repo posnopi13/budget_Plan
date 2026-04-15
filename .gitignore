@@ -10,3 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
+
+# Capacitor - CI에서 자동 생성되므로 커밋 불필요
+android/
+ios/
